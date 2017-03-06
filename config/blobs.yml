@@ -1,0 +1,33 @@
+---
+omsconfig/omsconfig-bosh-1.1.1-351.x64.deb:
+  object_id: aa574e16-f73e-4817-be73-9d6441375102
+  sha: a3d3bd3474ace0ded4c8b8a16ba670ffbe2b8ca4
+  size: 7854796
+omsconfig/omsconfig-bosh-1.1.1-351.x64.rpm:
+  object_id: 768ed694-043d-4e03-9626-2be150a1169c
+  sha: 0ec454143d915b6291647252f92412415706e0d9
+  size: 7574456
+omsagent/omsagent-bosh-1.2.0-148.universal.x64.deb:
+  object_id: 8247609a-af4e-4699-99ba-8825df1c5f2b
+  sha: 4910a9d2d975d70376012a4531a5c2161ccd85a1
+  size: 13808122
+omsagent/omsagent-bosh-1.2.0-148.universal.x64.rpm:
+  object_id: 21a82595-471b-4966-a3ab-5e8c7ee459cb
+  sha: 87a3cd52d3fff01dc700214633c71d8560d0eaf2
+  size: 11909464
+scx/scx-bosh-cimprov-1.6.3-48.universal.x64.deb:
+  object_id: 0d170c9a-8197-4feb-afef-7588f5329250
+  sha: '093cf10e4a12668cdd2ade9a57d396531ffc0db9'
+  size: 1709982
+scx/scx-bosh-cimprov-1.6.3-48.universal.x64.rpm:
+  object_id: 5f6d7786-7d91-4831-b9de-c538d3490df3
+  sha: 610b6979ef0a6ffdf435562f252bf565d87e511b
+  size: 1396924
+omi/omi-bosh-1.1.0-0.universal.x64.deb:
+  object_id: ee6336dd-466e-4dca-9a2f-97520e3af2a9
+  sha: 89f80a6f29380ecb0a198ba20e6b94959795b474
+  size: 6806132
+omi/omi-bosh-1.1.0-0.universal.x64.rpm:
+  object_id: 289106e0-8bf0-43b1-ab40-7c80bf5b463c
+  sha: c62ece93509eb3ee098826e580754eb847a00403
+  size: 5069824

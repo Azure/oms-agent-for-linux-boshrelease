@@ -1,0 +1,18 @@
+releases:
+- name: oms-agent-for-linux
+  version: latest 
+
+addons:
+- name: omsagent
+  jobs:
+  - name: omsagent
+    release: oms-agent-for-linux
+  properties:
+    oms:
+      workspace_id: CHANGE_ME
+      workspace_key: CHANGE_ME
+    rsyslog:
+      config: # Modify the config as needed, if no rsyslog.config is specifed, the default config will be used
+      - user.*
+      - syslog.*
+      - auth.*

@@ -1,0 +1,7 @@
+---
+name: omi
+
+files:
+- utils/utils.sh
+- omi/omi-bosh-1.1.0-0.universal.x64.deb
+- omi/omi-bosh-1.1.0-0.universal.x64.rpm

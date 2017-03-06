@@ -1,0 +1,5 @@
+# abort script on any command that exits with a non zero value
+set -e
+
+cp omsagent/omsagent-bosh-1.2.0-148.universal.x64.deb ${BOSH_INSTALL_TARGET}/
+cp omsagent/omsagent-bosh-1.2.0-148.universal.x64.rpm ${BOSH_INSTALL_TARGET}/

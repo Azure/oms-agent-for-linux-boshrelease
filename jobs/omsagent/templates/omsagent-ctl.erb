@@ -1,0 +1,110 @@
+#!/bin/bash
+
+source /var/vcap/packages/omi/utils.sh
+
+RUN_DIR=/var/vcap/sys/run/omsagent
+LOG_DIR=/var/vcap/sys/log/omsagent
+
+PID_FILE=$RUN_DIR/omsagent.pid
+LOG_FILE=$LOG_DIR/omsagent.log
+
+OMS_BIN=/var/vcap/packages/omsagent/opt/bin/omsagent
+RUBY_BIN=/var/vcap/packages/omsagent/opt/ruby/bin/ruby
+
+
+case $1 in
+
+  start)
+
+    pid_guard $PID_FILE omsagent
+
+    # Swap the order of hostname, otherwise the hostname in syslog shows localhost
+    sed -i 's/127\.0\.0\.1 localhost \(.*\)/127\.0\.0\.1 \1 localhost/g' /etc/hosts
+
+    # Write the onboard config
+    workspace_id=<%= p('oms.workspace_id') %>
+    workspace_key=<%= p('oms.workspace_key') %>
+
+    cat <<EOF > /etc/omsagent-onboard.conf 
+WORKSPACE_ID=$workspace_id
+SHARED_KEY=$workspace_key
+URL_TLD=opinsights.azure.com
+EOF
+
+    # Install packages
+    which dpkg > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        date >> /var/vcap/packages/omi/install.log.log
+        dpkg -i -E /var/vcap/packages/scx/scx-bosh-cimprov-1.6.3-48.universal.x64.deb >>  /var/vcap/packages/omi/install.log.log
+        date >> /var/vcap/packages/omi/install.log.log
+        dpkg -i -E /var/vcap/packages/omsagent/omsagent-bosh-1.2.0-148.universal.x64.deb >> /var/vcap/packages/omi/install.log.log
+        date >> /var/vcap/packages/omi/install.log.log
+        dpkg -i -E $DPKG_CONF_QUALS /var/vcap/packages/omsconfig/omsconfig-bosh-1.1.1-351.x64.deb >> /var/vcap/packages/omi/install.log.log
+        date >> /var/vcap/packages/omi/install.log.log
+    else
+        rpm -i /var/vcap/packages/scx/scx-bosh-cimprov-1.6.3-48.universal.x64.rpm >>  /var/vcap/packages/omi/install.log.log
+        rpm -i /var/vcap/packages/omsagent/omsagent-bosh-1.2.0-148.universal.x64.rpm  >> /var/vcap/packages/omi/install.log.log
+        rpm -i /var/vcap/packages/omsconfig/omsconfig-bosh-1.1.1-351.x64.rpm >> /var/vcap/packages/omi/install.log.log
+    fi
+
+    # Add omsagent user to vcap group for diretory access for dsc
+    usermod -aG vcap omsagent
+
+    # Create symlinks for dsc 
+    mkdir -p /opt/microsoft
+    ln -s /var/vcap/packages/omsagent/opt /opt/microsoft/omsagent
+    ln -s /var/vcap/packages/omsconfig/opt /opt/microsoft/omsconfig
+    mkdir -p /etc/opt/microsoft
+    ln -s /var/vcap/packages/omsagent/etc /etc/opt/microsoft/omsagent
+    mkdir -p /var/opt/microsoft
+    ln -s /var/vcap/packages/omsagent/var /var/opt/microsoft/omsagent
+    mkdir -p /etc/opt/omi/conf
+    ln -s /var/vcap/packages/omi/etc/conf/omsconfig /etc/opt/omi/conf/omsconfig
+    chown -h omsagent:omsagent /var/opt/microsoft/omsagent
+    chown -h omsagent /etc/opt/omi/conf/omsconfig
+
+    # Configure rsyslog if specfied
+    rsyslog_config="<%= p('rsyslog.config', []).join(' ') %>"
+
+    if [ -n "$rsyslog_config" ]; then
+        rsyslog_conf_file=/etc/rsyslog.d/95-omsagent.conf
+        echo "# Overwritten OMS Syslog collection" > $rsyslog_conf_file
+        for conf in $rsyslog_config; do
+           echo "$conf $(printf '\t\t')@127.0.0.1:25224" >> $rsyslog_conf_file
+        done
+
+        service rsyslog restart
+    fi
+
+    # link the service_control file
+    rm /var/vcap/packages/omsagent/opt/bin/service_control
+    ln -s /var/vcap/jobs/omsagent/bin/omsagent-ctl /var/vcap/packages/omsagent/opt/bin/service_control
+
+    $RUBY_BIN $OMS_BIN -d $PID_FILE -o $LOG_FILE --no-supervisor --user omsagent --group omiusers
+
+    ;;
+
+  stop)
+
+    kill -sigkill `cat $PID_FILE`
+    wait_until_process_stops $PID_FILE 10
+
+    ;;
+
+  restart)
+
+    $0 stop
+    pid_guard $PID_FILE omsagent
+    $RUBY_BIN $OMS_BIN -d $PID_FILE -o $LOG_FILE --no-supervisor --user omsagent --group omiusers
+
+    ;;
+
+  *)
+
+    echo "Usage: omsagent {start|stop|restart}"
+
+    ;;
+
+esac
+
+

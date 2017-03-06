@@ -1,0 +1,9 @@
+---
+name: omsagent
+
+dependencies:
+- scx
+
+files:
+- omsagent/omsagent-bosh-1.2.0-148.universal.x64.deb
+- omsagent/omsagent-bosh-1.2.0-148.universal.x64.rpm
