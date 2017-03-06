@@ -1,0 +1,62 @@
+#!/bin/bash
+
+source /var/vcap/packages/omi/utils.sh
+
+RUN_DIR=/var/vcap/sys/run/omi
+PID_FILE=$RUN_DIR/omiserver.pid
+
+OMI_BIN=/var/vcap/packages/omi/opt/bin/omiserver
+
+
+case $1 in
+
+  start)
+
+    pid_guard $PID_FILE omi
+
+    which dpkg > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        dpkg -i -E /var/vcap/packages/omi/omi-bosh-1.1.0-0.universal.x64.deb
+    else
+        rpm -i /var/vcap/packages/omi/omi-bosh-1.1.0-0.universal.x64.rpm
+    fi
+
+    rm /var/vcap/packages/omi/opt/bin/service_control
+    ln -s /var/vcap/jobs/omsagent/bin/omi-ctl /var/vcap/packages/omi/opt/bin/service_control 
+
+    /var/vcap/packages/omi/opt/bin/support/installssllinks
+
+    $OMI_BIN -d
+
+    ;;
+
+  stop)
+
+    $OMI_BIN -s > /dev/null 2>&1
+    wait_until_process_stops $PID_FILE 10
+
+    ;;
+
+  restart)
+
+    $0 stop
+    pid_guard $PID_FILE omi
+    $OMI_BIN -d
+
+    ;;
+
+  reload)
+
+    $0 restart
+
+    ;;
+
+  *)
+
+    echo "Usage: omi {start|stop|restart|reload}"
+
+    ;;
+
+esac
+
+

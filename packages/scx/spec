@@ -1,0 +1,9 @@
+---
+name: scx
+
+dependencies:
+- omi
+
+files:
+- scx/scx-bosh-cimprov-1.6.3-48.universal.x64.deb
+- scx/scx-bosh-cimprov-1.6.3-48.universal.x64.rpm

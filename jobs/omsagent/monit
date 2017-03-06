@@ -1,0 +1,13 @@
+check process omi
+  with pidfile /var/vcap/sys/run/omi/omiserver.pid
+  start program "/var/vcap/jobs/omsagent/bin/omi-ctl start"
+  stop program "/var/vcap/jobs/omsagent/bin/omi-ctl stop"
+  group vcap
+
+check process omsagent
+  with pidfile /var/vcap/sys/run/omsagent/omsagent.pid
+  start program "/var/vcap/jobs/omsagent/bin/omsagent-ctl start"
+    with timeout 120 seconds
+  stop program "/var/vcap/jobs/omsagent/bin/omsagent-ctl stop"
+  group vcap
+  depends on omi

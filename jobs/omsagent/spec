@@ -1,0 +1,20 @@
+---
+name: omsagent
+templates:
+  omi-ctl.erb: bin/omi-ctl
+  omsagent-ctl.erb: bin/omsagent-ctl
+
+packages:
+  - omi
+  - scx
+  - omsagent
+  - omsconfig
+
+properties:
+  oms.workspace_id:
+    description: OMS workspace ID
+  oms.workspace_key:
+    description: OMS workspace key
+  rsyslog.config:
+    description: rsyslog config, overwrite the default config of omsagent
+
