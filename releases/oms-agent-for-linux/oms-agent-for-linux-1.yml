@@ -3,36 +3,32 @@ packages:
 - name: omsconfig
   version: 975b876079d1af8c664b93c087701c42d5960ce6
   fingerprint: 975b876079d1af8c664b93c087701c42d5960ce6
-  sha1: 5abd63664f2bb2d1cacc88f942e964cc84775a23
+  sha1: 0a726ed127fc5b57c28689e2abb94367ed271680
   dependencies:
   - omsagent
 - name: omsagent
   version: d0f97be2d3fad1c97dff1f84a7a343b0256d9568
   fingerprint: d0f97be2d3fad1c97dff1f84a7a343b0256d9568
-  sha1: 11ef93cebaf59cbf52b5266be2503544b15e8dd2
+  sha1: 4a4f5e2051fcb0f243753ba5f99c287cc33cba60
   dependencies:
   - scx
 - name: scx
   version: 580261be056c66e8bc698c67ae701957ffb8754a
   fingerprint: 580261be056c66e8bc698c67ae701957ffb8754a
-  sha1: 1e06ca8db61a71c962d31b9e38b8566bc9191be7
+  sha1: 29f82bb084bd8c9979a19cbad905f9b4e5b9cbd8
   dependencies:
   - omi
 - name: omi
   version: de99e1bb9c9afd6ec304d51e5be83254f61020e2
   fingerprint: de99e1bb9c9afd6ec304d51e5be83254f61020e2
-  sha1: 90595123b3b92513d164f2f95662f2d31bc5a372
+  sha1: c2545372f9a9bab0ee7464252ff99c3e2856b21e
   dependencies: []
 jobs:
 - name: omsagent
-  version: 6f35fcb2a981e32e5df71847b1e25fb9c8f76f97
-  fingerprint: 6f35fcb2a981e32e5df71847b1e25fb9c8f76f97
-  sha1: a8a0291a6875e70fb4d6b4db8448d86134bd92ea
-license:
-  version: 94815311fea507b20b64e7b3b6e28e4aa3c7c462
-  fingerprint: 94815311fea507b20b64e7b3b6e28e4aa3c7c462
-  sha1: aa979c6816b88cf98ea5d745beb0bf9b4fc95d9a
-commit_hash: f5f7e0ae
+  version: c4a4e150f3cdccb4fcdb8adb301fe75bdf1877aa
+  fingerprint: c4a4e150f3cdccb4fcdb8adb301fe75bdf1877aa
+  sha1: 80f8faadb091aef72237752e853480625cf72151
+commit_hash: 7adcf4c7
 uncommitted_changes: true
 name: oms-agent-for-linux
 version: '1'

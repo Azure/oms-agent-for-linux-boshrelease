@@ -34,17 +34,13 @@ EOF
     # Install packages
     which dpkg > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        date >> /var/vcap/packages/omi/install.log.log
-        dpkg -i -E /var/vcap/packages/scx/scx-bosh-cimprov-1.6.3-48.universal.x64.deb >>  /var/vcap/packages/omi/install.log.log
-        date >> /var/vcap/packages/omi/install.log.log
-        dpkg -i -E /var/vcap/packages/omsagent/omsagent-bosh-1.2.0-148.universal.x64.deb >> /var/vcap/packages/omi/install.log.log
-        date >> /var/vcap/packages/omi/install.log.log
-        dpkg -i -E $DPKG_CONF_QUALS /var/vcap/packages/omsconfig/omsconfig-bosh-1.1.1-351.x64.deb >> /var/vcap/packages/omi/install.log.log
-        date >> /var/vcap/packages/omi/install.log.log
+        dpkg -i -E /var/vcap/packages/scx/scx-bosh-cimprov-1.6.3-48.universal.x64.deb
+        dpkg -i -E /var/vcap/packages/omsagent/omsagent-bosh-1.2.0-148.universal.x64.deb
+        dpkg -i -E $DPKG_CONF_QUALS /var/vcap/packages/omsconfig/omsconfig-bosh-1.1.1-351.x64.deb
     else
-        rpm -i /var/vcap/packages/scx/scx-bosh-cimprov-1.6.3-48.universal.x64.rpm >>  /var/vcap/packages/omi/install.log.log
-        rpm -i /var/vcap/packages/omsagent/omsagent-bosh-1.2.0-148.universal.x64.rpm  >> /var/vcap/packages/omi/install.log.log
-        rpm -i /var/vcap/packages/omsconfig/omsconfig-bosh-1.1.1-351.x64.rpm >> /var/vcap/packages/omi/install.log.log
+        rpm -i /var/vcap/packages/scx/scx-bosh-cimprov-1.6.3-48.universal.x64.rpm
+        rpm -i /var/vcap/packages/omsagent/omsagent-bosh-1.2.0-148.universal.x64.rpm
+        rpm -i /var/vcap/packages/omsconfig/omsconfig-bosh-1.1.1-351.x64.rpm
     fi
 
     # Add omsagent user to vcap group for diretory access for dsc
