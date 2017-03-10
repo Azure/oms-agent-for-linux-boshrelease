@@ -1,34 +1,38 @@
 ---
 packages:
 - name: omsconfig
-  version: 975b876079d1af8c664b93c087701c42d5960ce6
-  fingerprint: 975b876079d1af8c664b93c087701c42d5960ce6
-  sha1: 0a726ed127fc5b57c28689e2abb94367ed271680
+  version: 2bf2c6d3965e13ca742284c4de68995bb67380c4
+  fingerprint: 2bf2c6d3965e13ca742284c4de68995bb67380c4
+  sha1: 3b220e1391d219d3decbe23e3d57d2c5058d50bf
   dependencies:
   - omsagent
 - name: omsagent
-  version: d0f97be2d3fad1c97dff1f84a7a343b0256d9568
-  fingerprint: d0f97be2d3fad1c97dff1f84a7a343b0256d9568
-  sha1: 4a4f5e2051fcb0f243753ba5f99c287cc33cba60
+  version: a20617a5aff9876697e9bf025855a4f803ce3025
+  fingerprint: a20617a5aff9876697e9bf025855a4f803ce3025
+  sha1: d4eca935135c8ba2319b306b84d850759360e067
   dependencies:
   - scx
 - name: scx
-  version: 580261be056c66e8bc698c67ae701957ffb8754a
-  fingerprint: 580261be056c66e8bc698c67ae701957ffb8754a
-  sha1: 29f82bb084bd8c9979a19cbad905f9b4e5b9cbd8
+  version: bc06b334f143968d34e753e341c28c1fa55245fb
+  fingerprint: bc06b334f143968d34e753e341c28c1fa55245fb
+  sha1: '06926fa7e1f9d73b37bbf0fbf972441c36585b1c'
   dependencies:
   - omi
 - name: omi
-  version: de99e1bb9c9afd6ec304d51e5be83254f61020e2
-  fingerprint: de99e1bb9c9afd6ec304d51e5be83254f61020e2
-  sha1: c2545372f9a9bab0ee7464252ff99c3e2856b21e
+  version: 36327bad9b212f47f0219d70bf12d61ea80a53f4
+  fingerprint: 36327bad9b212f47f0219d70bf12d61ea80a53f4
+  sha1: 31b09bb6e5be906cc745a69e080e0cc32f2e09bb
   dependencies: []
 jobs:
 - name: omsagent
-  version: c4a4e150f3cdccb4fcdb8adb301fe75bdf1877aa
-  fingerprint: c4a4e150f3cdccb4fcdb8adb301fe75bdf1877aa
-  sha1: 80f8faadb091aef72237752e853480625cf72151
-commit_hash: 7adcf4c7
+  version: 68c07fade2bb2686e63c8aed78741463c71919fe
+  fingerprint: 68c07fade2bb2686e63c8aed78741463c71919fe
+  sha1: f7e07c27d576087e2a2a0d2df57f92745cbbf2c5
+license:
+  version: e6c4ccc65c76e75e2338d1edabdcf264d37ee663
+  fingerprint: e6c4ccc65c76e75e2338d1edabdcf264d37ee663
+  sha1: ca68c1a84b0a3cd99ce37852e389d8f8bd69fe2d
+commit_hash: 9bf39b88
 uncommitted_changes: true
 name: oms-agent-for-linux
 version: '1'
