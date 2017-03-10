@@ -1,18 +1,21 @@
 releases:
 - name: oms-agent-for-linux
-  version: latest 
-
+  version: latest
 addons:
 - name: omsagent
   jobs:
   - name: omsagent
     release: oms-agent-for-linux
   properties:
+    # Get the OMS workspace ID and key from OMS Portal
     oms:
       workspace_id: CHANGE_ME
       workspace_key: CHANGE_ME
-    rsyslog:
-      config: # Modify the config as needed, if no rsyslog.config is specifed, the default config will be used
-      - user.*
+    # Modify the config as needed, if no rsyslog config is specifed, the default rsyslog config of omsagent will be used
+    rsyslog:
+      selector_list:
+      - user.*     
       - syslog.*
-      - auth.*
+      port: 25224
+      protocol_type: udp
+
