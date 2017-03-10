@@ -33,13 +33,17 @@ addons:
   - name: omsagent
     release: oms-agent-for-linux
   properties:
-    oms: # Get the OMS workspace ID and key from OMS Portal
+    # Get the OMS workspace ID and key from OMS Portal
+    oms:
       workspace_id: CHANGE_ME
       workspace_key: CHANGE_ME
-    rsyslog: # Modify the config as needed, if no rsyslog.config is specifed, the default rsyslog config of omsagent will be used
-      config:
+    # Modify the config as needed, if no rsyslog config is specifed, the [default rsyslog config](https://github.com/Microsoft/OMS-Agent-for-Linux/blob/OMSAgent-201610-v1.2.0-148/installer/conf/rsyslog.conf) of omsagent will be used
+    rsyslog:
+      selector_list:
       - user.*      
       - syslog.*
+      port: 25224
+      protocol_type: udp
 ```
 
 Deploy the runtime config:

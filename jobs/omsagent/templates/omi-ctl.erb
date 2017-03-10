@@ -16,9 +16,9 @@ case $1 in
 
     which dpkg > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        dpkg -i -E /var/vcap/packages/omi/omi-bosh-1.1.0-0.universal.x64.deb
+        dpkg -i -E /var/vcap/packages/omi/omi-bosh-*.deb
     else
-        rpm -i /var/vcap/packages/omi/omi-bosh-1.1.0-0.universal.x64.rpm
+        rpm -i /var/vcap/packages/omi/omi-bosh-*.rpm
     fi
 
     rm /var/vcap/packages/omi/opt/bin/service_control
@@ -33,7 +33,7 @@ case $1 in
   stop)
 
     $OMI_BIN -s > /dev/null 2>&1
-    wait_until_process_stops $PID_FILE 10
+    wait_until_process_stops $PID_FILE 5
 
     ;;
 
@@ -53,7 +53,7 @@ case $1 in
 
   *)
 
-    echo "Usage: omi {start|stop|restart|reload}"
+    echo "Usage: $0 {start|stop|restart|reload}"
 
     ;;
 

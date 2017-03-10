@@ -2,5 +2,4 @@
 set -e
 
 cp utils/utils.sh ${BOSH_INSTALL_TARGET}/
-cp omi/omi-bosh-1.1.0-0.universal.x64.deb ${BOSH_INSTALL_TARGET}/
-cp omi/omi-bosh-1.1.0-0.universal.x64.rpm ${BOSH_INSTALL_TARGET}/
+cp omi/omi-bosh-* ${BOSH_INSTALL_TARGET}/

@@ -18,7 +18,7 @@ case $1 in
 
     pid_guard $PID_FILE omsagent
 
-    # Swap the order of hostname, otherwise the hostname in syslog shows localhost
+    # Swap the order of hostname, as syslog uses the first name behind 127.0.0.1 as hostname
     sed -i 's/127\.0\.0\.1 localhost \(.*\)/127\.0\.0\.1 \1 localhost/g' /etc/hosts
 
     # Write the onboard config
@@ -34,13 +34,13 @@ EOF
     # Install packages
     which dpkg > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        dpkg -i -E /var/vcap/packages/scx/scx-bosh-cimprov-1.6.3-48.universal.x64.deb
-        dpkg -i -E /var/vcap/packages/omsagent/omsagent-bosh-1.2.0-148.universal.x64.deb
-        dpkg -i -E $DPKG_CONF_QUALS /var/vcap/packages/omsconfig/omsconfig-bosh-1.1.1-351.x64.deb
+        dpkg -i -E /var/vcap/packages/scx/scx-bosh-cimprov-*.deb
+        dpkg -i -E /var/vcap/packages/omsagent/omsagent-bosh-*.deb
+        dpkg -i -E /var/vcap/packages/omsconfig/omsconfig-bosh-*.deb
     else
-        rpm -i /var/vcap/packages/scx/scx-bosh-cimprov-1.6.3-48.universal.x64.rpm
-        rpm -i /var/vcap/packages/omsagent/omsagent-bosh-1.2.0-148.universal.x64.rpm
-        rpm -i /var/vcap/packages/omsconfig/omsconfig-bosh-1.1.1-351.x64.rpm
+        rpm -i /var/vcap/packages/scx/scx-bosh-cimprov-*.rpm
+        rpm -i /var/vcap/packages/omsagent/omsagent-bosh-*.rpm
+        rpm -i /var/vcap/packages/omsconfig/omsconfig-bosh-*.rpm
     fi
 
     # Add omsagent user to vcap group for diretory access for dsc
@@ -60,17 +60,39 @@ EOF
     chown -h omsagent /etc/opt/omi/conf/omsconfig
 
     # Configure rsyslog if specfied
-    rsyslog_config="<%= p('rsyslog.config', []).join(' ') %>"
+    rsyslog_selectors="<%= p('rsyslog.selector_list', []).join(' ') %>"
+    rsyslog_port=<%= p('rsyslog.port', 25224) %>
+    rsyslog_protocol=<%= p('rsyslog.protocol_type', 'udp') %>
+    rsyslog_conf_file=/etc/rsyslog.d/95-omsagent.conf
+    omsagent_conf_file=/var/vcap/packages/omsagent/etc/conf/omsagent.conf
 
-    if [ -n "$rsyslog_config" ]; then
-        rsyslog_conf_file=/etc/rsyslog.d/95-omsagent.conf
-        echo "# Overwritten OMS Syslog collection" > $rsyslog_conf_file
-        for conf in $rsyslog_config; do
-           echo "$conf $(printf '\t\t')@127.0.0.1:25224" >> $rsyslog_conf_file
-        done
+    # Set the initial configuration
+    cp /var/vcap/packages/omsagent/etc/sysconf/omsagent.conf $omsagent_conf_file
+    cp /var/vcap/packages/omsagent/etc/sysconf/rsyslog.conf $rsyslog_conf_file
 
-        service rsyslog restart
+    # Set rsyslog protocol
+    conf_str="@"
+    if [ "${rsyslog_protocol,,}" = tcp ]; then
+        conf_str="@@"
     fi
+    sed -i "s/protocol_type \(udp\|tcp\)/protocol_type "${rsyslog_protocol,,}"/g" $omsagent_conf_file
+
+    # Set rsyslog port
+    sed -i "s/port [0-9]*/port ${rsyslog_port}/g" $omsagent_conf_file
+
+    # Set rsyslog selectors
+    conf_str="${conf_str}127.0.0.1:${rsyslog_port,,}"
+
+    if [ -n "$rsyslog_selectors" ]; then
+        echo "# Overwritten OMS Syslog collection" > $rsyslog_conf_file
+        for conf in $rsyslog_selectors; do
+           echo "$conf $(printf '\t\t')$conf_str" >> $rsyslog_conf_file
+        done
+    else
+        sed -i "s/@*127\.0\.0\.1:[0-9]*/$conf_str/g" $rsyslog_conf_file
+    fi
+
+    service rsyslog restart
 
     # link the service_control file
     rm /var/vcap/packages/omsagent/opt/bin/service_control
@@ -83,7 +105,7 @@ EOF
   stop)
 
     kill -sigkill `cat $PID_FILE`
-    wait_until_process_stops $PID_FILE 10
+    wait_until_process_stops $PID_FILE 5
 
     ;;
 
@@ -95,9 +117,15 @@ EOF
 
     ;;
 
+  find-systemd-dir)
+
+    find_systemd_dir
+
+    ;;
+
   *)
 
-    echo "Usage: omsagent {start|stop|restart}"
+    echo "Usage: $0 {start|stop|restart|find-systemd-dir}"
 
     ;;
 

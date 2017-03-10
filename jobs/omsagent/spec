@@ -15,6 +15,9 @@ properties:
     description: OMS workspace ID
   oms.workspace_key:
     description: OMS workspace key
-  rsyslog.config:
-    description: rsyslog config, overwrite the default config of omsagent
-
+  rsyslog.selector_list:
+    description: list of syslog selectors, syntax is FACILITY.PRIORITY
+  rsyslog.port:
+    description: the syslog port that the OMS agent is listening on, default is 25224
+  rsyslog.protocol_type:
+    description: udp or tcp, default is udp

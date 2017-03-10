@@ -1,5 +1,4 @@
 # abort script on any command that exits with a non zero value
 set -e
 
-cp scx/scx-bosh-cimprov-1.6.3-48.universal.x64.deb ${BOSH_INSTALL_TARGET}/
-cp scx/scx-bosh-cimprov-1.6.3-48.universal.x64.rpm ${BOSH_INSTALL_TARGET}/
+cp scx/scx-bosh-cimprov-* ${BOSH_INSTALL_TARGET}/

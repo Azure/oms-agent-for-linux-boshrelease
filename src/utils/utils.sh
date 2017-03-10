@@ -1,3 +1,5 @@
+#!/bin/bash
+
 is_process_running()
 {
     PIDFILE=$1
@@ -15,11 +17,10 @@ is_process_running()
     fi
 }
 
-
 wait_until_process_stops()
 {
     # Required parameter: Number of seconds to wait for agent to stop
-    if [ -z "$1" -o -z "$2" -o "$2" -le 0 ]; then
+    if [ -z "$1" ] || [ -z "$2" ] || [ "$2" -le 0 ]; then
         echo "Function \"wait_until_process_stops\" called with invalid parameter"
         exit 1
     fi
@@ -56,3 +57,30 @@ pid_guard() {
   fi
 }
 
+find_systemd_dir()
+{
+    # Various distributions have different paths for systemd unit files ...
+    local UNIT_DIR_LIST="/usr/lib/systemd/system /lib/systemd/system"
+
+    if pidof systemd 1> /dev/null 2> /dev/null; then
+        # Be sure systemctl lives where we expect it to
+        if [ ! -f /bin/systemctl ]; then
+            echo "FATAL: Unable to locate systemctl program" 1>&2
+            exit 1
+        fi
+
+        # Find systemd unit directory
+        for i in ${UNIT_DIR_LIST}; do
+            if [ -d $i ]; then
+                echo ${i}
+                return 0
+            fi
+        done
+
+        # Didn't find unit directory, that's fatal
+        echo "FATAL: Unable to resolve systemd unit directory!" 1>&2
+        exit 1
+    else
+        return 1
+    fi
+}
