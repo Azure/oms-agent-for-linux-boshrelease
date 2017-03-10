@@ -21,6 +21,7 @@ bosh upload release releases/oms-agent-for-linux/oms-agent-for-linux-1.yml
 ### Deploy as a BOSH addon
 
 To deploy OMS Agent on all instances in your CloudFoundry deployment, specify the job as an addon in [runtime config](https://bosh.io/docs/runtime-config.html). Do not specify the job as part of your deployment manifest if you are using the runtime config.
+If no rsyslog config is specified, the [default rsyslog config](https://github.com/Microsoft/OMS-Agent-for-Linux/blob/OMSAgent-201610-v1.2.0-148/installer/conf/rsyslog.conf) of omsagent will be used.
 ```
 # runtime.yml
 ---
@@ -37,7 +38,7 @@ addons:
     oms:
       workspace_id: CHANGE_ME
       workspace_key: CHANGE_ME
-    # Modify the config as needed, if no rsyslog config is specifed, the [default rsyslog config](https://github.com/Microsoft/OMS-Agent-for-Linux/blob/OMSAgent-201610-v1.2.0-148/installer/conf/rsyslog.conf) of omsagent will be used
+    # Set the rsyslog config as needed, optional
     rsyslog:
       selector_list:
       - user.*      
