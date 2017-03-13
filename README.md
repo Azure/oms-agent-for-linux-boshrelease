@@ -12,10 +12,7 @@ This release provides an [OMS Agent](https://github.com/Microsoft/OMS-Agent-for-
 
 To use this bosh release, first upload it to your bosh director:
 ```
-bosh target BOSH_HOST
-git clone https://github.com/Azure/oms-agent-for-linux-boshrelease.git
-cd oms-agent-for-linux-boshrelease
-bosh upload release releases/oms-agent-for-linux/oms-agent-for-linux-1.yml
+bosh upload release https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/v1/oms-agent-for-linux.tgz
 ```
 
 ### Deploy as a BOSH addon
@@ -28,7 +25,7 @@ If no rsyslog config is specified, the [default rsyslog config](https://github.c
 ---
 releases:
 - name: oms-agent-for-linux
-  version: latest
+  version: 1
 addons:
 - name: omsagent
   jobs:

@@ -1,6 +1,6 @@
 releases:
 - name: oms-agent-for-linux
-  version: latest
+  version: 1
 addons:
 - name: omsagent
   jobs:
