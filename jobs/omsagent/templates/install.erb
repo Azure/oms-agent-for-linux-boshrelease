@@ -1,0 +1,88 @@
+#!/bin/bash
+
+retry_create_symlinks()
+{
+    if [ -z "$1" ] || [ -z "$2" ]; then
+        echo "Function \"retry_create_symlinks\" called with invalid parameter"
+        exit 1
+    fi
+
+    DIR=$1
+    LINK=$2
+
+    if [ ! -L $LINK ]; then
+        RETRIES=2
+        while [ $RETRIES -gt 0 ]; do
+            if [ -d $LINK ]; then
+                mv -rf $LINK/* $DIR/
+                rm -rf $LINK
+            fi
+            ln -s $DIR $LINK
+            if [ -L $LINK ]; then
+                break
+            fi
+            RETRIES=$((RETRIES - 1))
+        done
+        if [ $RETRIES -eq 0 ]; then
+            echo "Failed to create symlink $LINK to $DIR"
+        fi
+    fi
+}
+
+workspace_id=<%= p('oms.workspace_id') %>
+workspace_key=<%= p('oms.workspace_key') %>
+
+# Redirect logs
+mkdir -p /var/vcap/sys/log/omi
+mkdir -p /var/vcap/sys/log/scx
+mkdir -p /var/vcap/sys/log/omsconfig
+
+mkdir -p /var/opt/omi
+mkdir -p /var/opt/microsoft/scx
+
+retry_create_symlinks /var/vcap/sys/log/omi /var/opt/omi/log
+retry_create_symlinks /var/vcap/sys/log/scx /var/opt/microsoft/scx/log
+retry_create_symlinks /var/vcap/sys/log/omsconfig /var/opt/microsoft/omsconfig
+
+chown -h omsagent:omsagent /var/opt/microsoft/omsconfig
+
+cp -f /var/vcap/packages/omsagent/logrotate.scx.conf /etc/logrotate.d/scx
+
+# Write the onboard config
+cat <<EOF > /etc/omsagent-onboard.conf
+WORKSPACE_ID=$workspace_id
+SHARED_KEY=$workspace_key
+URL_TLD=opinsights.azure.com
+EOF
+
+# Install packages
+which dpkg > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    dpkg -i --force-confold --force-confdef /var/vcap/packages/omsagent/omi*.deb /var/vcap/packages/omsagent/scx*.deb /var/vcap/packages/omsagent/omsagent*.deb /var/vcap/packages/omsagent/omsconfig*.deb
+else
+    rpm -Uvh --force /var/vcap/packages/omsagent/omi-*.rpm /var/vcap/packages/omsagent/scx*.rpm /var/vcap/packages/omsagent/omsagent*.rpm /var/vcap/packages/omsagent/omsconfig*.rpm
+fi
+
+# Add oms users to vcap group for file system access
+usermod -aG vcap omsagent
+usermod -aG vcap nxautomation
+
+# Backup the initial configuration
+if [ ! -e /etc/opt/microsoft/omsagent/sysconf/syslog.conf.bk ]; then
+    cp /etc/opt/microsoft/omsagent/conf/omsagent.d/syslog.conf /etc/opt/microsoft/omsagent/sysconf/syslog.conf.bk
+fi
+if [ ! -e /etc/opt/microsoft/omsagent/sysconf/95-omsagent.conf.bk ]; then
+    cp /etc/rsyslog.d/95-omsagent.conf /etc/opt/microsoft/omsagent/sysconf/95-omsagent.conf.bk
+fi
+
+# Disable the default service
+service omsagent-${workspace_id} stop
+rm -f /etc/init.d/omsagent*
+
+service omid stop
+rm -f /etc/init.d/omid
+
+# Add the config for collecting uaa.log
+if [ -f /var/vcap/sys/log/uaa/uaa.log ]; then
+    cp -f /var/vcap/packages/omsagent/oms.uaa.conf /etc/opt/microsoft/omsagent/conf/omsagent.d/uaa.conf
+fi

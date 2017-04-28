@@ -1,14 +1,12 @@
 ---
 name: omsagent
 templates:
+  install.erb: bin/pre-start
   omi-ctl.erb: bin/omi-ctl
   omsagent-ctl.erb: bin/omsagent-ctl
 
 packages:
-  - omi
-  - scx
   - omsagent
-  - omsconfig
 
 properties:
   oms.workspace_id:

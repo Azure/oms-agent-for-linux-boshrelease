@@ -1,5 +1,0 @@
-# abort script on any command that exits with a non zero value
-set -e
-
-cp utils/utils.sh ${BOSH_INSTALL_TARGET}/
-cp omi/omi-bosh-* ${BOSH_INSTALL_TARGET}/

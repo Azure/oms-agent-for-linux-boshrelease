@@ -1,9 +1,0 @@
----
-name: omsconfig
-
-dependencies:
-- omsagent
-
-files:
-- omsconfig/omsconfig-bosh-1.1.1-351.x64.deb
-- omsconfig/omsconfig-bosh-1.1.1-351.x64.rpm

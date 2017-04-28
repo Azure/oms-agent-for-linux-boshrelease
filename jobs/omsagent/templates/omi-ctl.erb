@@ -1,32 +1,25 @@
 #!/bin/bash
 
-source /var/vcap/packages/omi/utils.sh
+source /var/vcap/packages/omsagent/utils.sh
 
 RUN_DIR=/var/vcap/sys/run/omi
 PID_FILE=$RUN_DIR/omiserver.pid
 
-OMI_BIN=/var/vcap/packages/omi/opt/bin/omiserver
-
+OMI_BIN=/opt/omi/bin/omiserver
 
 case $1 in
 
   start)
 
+    mkdir -p $RUN_DIR
     pid_guard $PID_FILE omi
 
-    which dpkg > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        dpkg -i -E /var/vcap/packages/omi/omi-bosh-*.deb
-    else
-        rpm -i /var/vcap/packages/omi/omi-bosh-*.rpm
-    fi
-
-    rm /var/vcap/packages/omi/opt/bin/service_control
-    ln -s /var/vcap/jobs/omsagent/bin/omi-ctl /var/vcap/packages/omi/opt/bin/service_control 
-
-    /var/vcap/packages/omi/opt/bin/support/installssllinks
+    rm /opt/omi/bin/service_control
+    ln -s /var/vcap/jobs/omsagent/bin/omi-ctl /opt/omi/bin/service_control 
 
     $OMI_BIN -d
+    sleep 1
+    pidof $OMI_BIN > $PID_FILE
 
     ;;
 
@@ -42,18 +35,32 @@ case $1 in
     $0 stop
     pid_guard $PID_FILE omi
     $OMI_BIN -d
+    sleep 1
+    pidof $OMI_BIN > $PID_FILE
 
     ;;
 
   reload)
 
-    $0 restart
+    is_process_running $PID_FILE
+    if [ $? -ne 0 ]; then
+        $OMI_BIN -r
+    else
+        $0 start
+    fi
+
+    ;;
+
+  is-running)
+
+    is_process_running $PID_FILE
+    exit $?
 
     ;;
 
   *)
 
-    echo "Usage: $0 {start|stop|restart|reload}"
+    echo "Usage: $0 {start|stop|restart|reload|is-running}"
 
     ;;
 
