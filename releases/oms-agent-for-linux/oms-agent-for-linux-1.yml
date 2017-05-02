@@ -1,19 +1,19 @@
 ---
 packages:
 - name: omsagent
-  version: f8f297f3bdff52d9c34ff198f72bdc5cb34aca85
-  fingerprint: f8f297f3bdff52d9c34ff198f72bdc5cb34aca85
-  sha1: 16875570e69cf6f0ceb6b3609f22cd5d86dfc189
+  version: 9b421a244e7655e2452624766b5d49a824751c4b
+  fingerprint: 9b421a244e7655e2452624766b5d49a824751c4b
+  sha1: cc1569f15c5c5c3a5c1d042039ca35d5723979a0
   dependencies: []
 jobs:
 - name: omsagent
-  version: f5e69b48206ed5702bb697fab36de2ff596ff23d
-  fingerprint: f5e69b48206ed5702bb697fab36de2ff596ff23d
-  sha1: bb8c07f7f3e2914398451b89a8f1f9dd0cb6cec3
+  version: d0d4421c4087053eee3f2228c36d6db2b59e7633
+  fingerprint: d0d4421c4087053eee3f2228c36d6db2b59e7633
+  sha1: 2c867a3632cf5944d03ca864a87dee26b963d0d5
 license:
   version: e6c4ccc65c76e75e2338d1edabdcf264d37ee663
   fingerprint: e6c4ccc65c76e75e2338d1edabdcf264d37ee663
-  sha1: 039ff715624729edd9f8d54ab97dd71fb9ef2eea
+  sha1: 2b92a42eeede1ca926be8f244636237019ef6bf3
 commit_hash: '00000000'
 uncommitted_changes: false
 name: oms-agent-for-linux

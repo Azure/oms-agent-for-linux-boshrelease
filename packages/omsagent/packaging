@@ -1,6 +1,6 @@
 # abort script on any command that exits with a non zero value
 set -e
 
-cp utils/utils.sh ${BOSH_INSTALL_TARGET}/
-cp omsagent/* ${BOSH_INSTALL_TARGET}/
-cp conf/* ${BOSH_INSTALL_TARGET}/
+cp -f utils/utils.sh ${BOSH_INSTALL_TARGET}/
+cp -f omsagent/* ${BOSH_INSTALL_TARGET}/
+cp -f conf/* ${BOSH_INSTALL_TARGET}/

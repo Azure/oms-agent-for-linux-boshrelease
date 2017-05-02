@@ -13,6 +13,7 @@ retry_create_symlinks()
     if [ ! -L $LINK ]; then
         RETRIES=2
         while [ $RETRIES -gt 0 ]; do
+            # If $LINK exists and is a directory, backup the logs and then recreate it as a symlink
             if [ -d $LINK ]; then
                 mv -rf $LINK/* $DIR/
                 rm -rf $LINK
@@ -67,10 +68,7 @@ fi
 usermod -aG vcap omsagent
 usermod -aG vcap nxautomation
 
-# Backup the initial configuration
-if [ ! -e /etc/opt/microsoft/omsagent/sysconf/syslog.conf.bk ]; then
-    cp /etc/opt/microsoft/omsagent/conf/omsagent.d/syslog.conf /etc/opt/microsoft/omsagent/sysconf/syslog.conf.bk
-fi
+# Backup the default configuration, at every deployment the rsyslog config will be first restored from default and then changed according to job properties
 if [ ! -e /etc/opt/microsoft/omsagent/sysconf/95-omsagent.conf.bk ]; then
     cp /etc/rsyslog.d/95-omsagent.conf /etc/opt/microsoft/omsagent/sysconf/95-omsagent.conf.bk
 fi

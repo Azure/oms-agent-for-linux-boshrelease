@@ -39,6 +39,29 @@ wait_until_process_stops()
     is_process_running $PIDFILE
 }
 
+wait_until_file_exists()
+{
+    if [ -z "$1" ] || [ -z "$2" ] || [ "$2" -le 0 ]; then
+        echo "Function \"wait_until_file_exists\" called with invalid parameter"
+        exit 1
+    fi
+
+    FILE=$1
+    TIME=$2
+
+    COUNTER=$(( $TIME * 2 )) # Since we sleep 0.5 seconds, compute number of seconds
+    while [ $COUNTER -gt 0 ]; do
+        [ -f $FILE ] && return 0
+        COUNTER=$(( $COUNTER - 1 ))
+        sleep 0.5
+    done
+
+    if [ -f $FILE ]; then
+        return 0
+    fi
+    return 1
+}
+
 pid_guard() {
     echo "------------ STARTING `basename $0` at `date` --------------" | tee /dev/stderr
     pidfile=$1

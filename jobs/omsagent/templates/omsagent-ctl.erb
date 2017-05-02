@@ -35,7 +35,6 @@ case $1 in
     omsagent_syslog_conf_file=$CONF_DIR/syslog.conf
 
     # Set the initial configuration
-    cp /etc/opt/microsoft/omsagent/sysconf/syslog.conf.bk $omsagent_conf_file
     cp /etc/opt/microsoft/omsagent/sysconf/95-omsagent.conf.bk $rsyslog_conf_file
 
     # Set rsyslog protocol
@@ -49,7 +48,7 @@ case $1 in
     sed -i "s/port [0-9]*/port ${rsyslog_port}/g" $omsagent_syslog_conf_file
 
     # Set rsyslog selectors
-    conf_str="${conf_str}127.0.0.1:${rsyslog_port,,}"
+    conf_str="${conf_str}127.0.0.1:${rsyslog_port}"
 
     if [ -n "$rsyslog_selectors" ]; then
         echo "# Overwritten OMS Syslog collection" > $rsyslog_conf_file
@@ -68,10 +67,8 @@ case $1 in
 
     $RUBY_BIN $OMS_BIN -d $PID_FILE -o $LOG_FILE --no-supervisor -c $OMSAGENT_CONF --user omsagent --group omiusers
 
-    # When two omsagent processes are started, the later one will update PID file but fails to run
-    # So here updates the PID file to the real running process
-    sleep 1
-    pidof $RUBY_BIN > $PID_FILE
+    wait_until_file_exists $PID_FILE 5
+
     ;;
 
   stop)

@@ -4,4 +4,3 @@ blobstore:
   options:
     bucket_name: oms-agent-for-linux-boshrelease
 final_name: oms-agent-for-linux
-
