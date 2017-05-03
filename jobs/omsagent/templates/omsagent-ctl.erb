@@ -77,11 +77,10 @@ case $1 in
     wait_until_process_stops $PID_FILE 5
     ;;
 
+  # dsc might call restart, to avoid conflict with monit, only stop the omsagent process, and leave monit to start it again
   restart|reload)
 
     $0 stop
-    pid_guard $PID_FILE omsagent
-    $RUBY_BIN $OMS_BIN -d $PID_FILE -o $LOG_FILE --no-supervisor -c $OMSAGENT_CONF --user omsagent --group omiusers
     ;;
 
   is-running)

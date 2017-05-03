@@ -7,7 +7,6 @@ check process omi
 check process omsagent
   with pidfile /var/vcap/sys/run/omsagent/omsagent.pid
   start program "/var/vcap/jobs/omsagent/bin/omsagent-ctl start"
-    with timeout 120 seconds
   stop program "/var/vcap/jobs/omsagent/bin/omsagent-ctl stop"
   group vcap
   depends on omi
