@@ -2,11 +2,13 @@
 
 This release provides an [OMS Agent](https://github.com/Microsoft/OMS-Agent-for-Linux) job for sending VM operational data (Syslog, Performance, Alerts, Inventory) to [Azure OMS Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-overview).
 
-## Get started
+## Prerequisites
 
 ### Create an OMS Workspace in Azure
 
 * [Get started with Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-get-started)
+
+## Get started
 
 ### Upload release
 
@@ -50,3 +52,7 @@ Deploy the runtime config:
 bosh update runtime-config runtime.yml
 bosh deploy
 ```
+
+## Additional reference
+
+To collect metrics and logs from the [Loggregator](https://docs.cloudfoundry.org/loggregator/architecture.html) Firehose to [OMS Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/), please refer to [oms-log-analytics-firehose-nozzle](https://github.com/Azure/oms-log-analytics-firehose-nozzle).

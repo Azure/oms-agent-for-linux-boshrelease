@@ -61,7 +61,8 @@ case $1 in
 
     service rsyslog restart
 
-    # link the service_control file
+    # since the default initd service of omsagent is disabled, and dsc might call service restart
+    # so link the service_control file to this job script, and also add some extra commands below
     rm /opt/microsoft/omsagent/bin/service_control
     ln -s /var/vcap/jobs/omsagent/bin/omsagent-ctl /opt/microsoft/omsagent/bin/service_control
 
