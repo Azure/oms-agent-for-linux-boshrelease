@@ -63,6 +63,7 @@ case $1 in
 
     # since the default initd service of omsagent is disabled, and dsc might call service restart
     # so link the service_control file to this job script, and also add some extra commands below
+    # bosh monit only calls start and stop, restart is only called by dsc
     rm /opt/microsoft/omsagent/bin/service_control
     ln -s /var/vcap/jobs/omsagent/bin/omsagent-ctl /opt/microsoft/omsagent/bin/service_control
 
