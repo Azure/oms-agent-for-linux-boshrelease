@@ -54,8 +54,10 @@ bosh deploy
 ```
 
 ## View in OMS Portal
+
 ### Import OMS View
-Operators can use OMS portal to visualize the logs and metrics collected by OMS Agent. From the main OMS Overview page, go to **View Designer** -> **Import** -> **Browse**, select the [Syslog and Perf.omsview](./omsview/Syslog%20and%20Perf.omsview) file, and save the view. Now a **Tile** will be displayed on the main OMS Overview page. Click the **Tile**, it shows visualized metrics.
+
+Operators can use OMS portal to visualize the logs and metrics collected by OMS Agent. From the main OMS Overview page, go to **View Designer** -> **Import** -> **Browse**, select the [Syslog and Perf.omsview](./docs/omsview/Syslog%20and%20Perf.omsview) file, and save the view. Now a **Tile** will be displayed on the main OMS Overview page. Click the **Tile**, it shows visualized metrics.
 
 Operators can customize the view or create new views through **View Designer**.
 
