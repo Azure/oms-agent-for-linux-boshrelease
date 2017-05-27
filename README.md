@@ -53,6 +53,12 @@ bosh update runtime-config runtime.yml
 bosh deploy
 ```
 
+## View in OMS Portal
+### Import OMS View
+Operators can use OMS portal to visualize the logs and metrics collected by OMS Agent. From the main OMS Overview page, go to **View Designer** -> **Import** -> **Browse**, select the [Syslog and Perf.omsview](./omsview/Syslog%20and%20Perf.omsview) file, and save the view. Now a **Tile** will be displayed on the main OMS Overview page. Click the **Tile**, it shows visualized metrics.
+
+Operators can customize the view or create new views through **View Designer**.
+
 ## Additional reference
 
 To collect metrics and logs from the [Loggregator](https://docs.cloudfoundry.org/loggregator/architecture.html) Firehose to [OMS Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/), please refer to [oms-log-analytics-firehose-nozzle](https://github.com/Azure/oms-log-analytics-firehose-nozzle).
