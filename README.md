@@ -1,6 +1,7 @@
 # oms-agent-for-linux BOSH release
 
 This release provides an [OMS Agent](https://github.com/Microsoft/OMS-Agent-for-Linux) job for sending VM operational data (Syslog, Performance, Alerts, Inventory) to [Azure OMS Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-overview).
+> This is currently a preview release. 
 
 ## Prerequisites
 
