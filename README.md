@@ -27,7 +27,7 @@ If no rsyslog config is specified, the [default rsyslog config](https://github.c
 ---
 releases:
 - name: oms-agent-for-linux
-  version: 1
+  version: 2
 addons:
 - name: omsagent
   jobs:
