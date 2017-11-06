@@ -1,33 +1,32 @@
----
-omsagent/omsagent-1.3.5-127.universal.x64.rpm:
-  object_id: 303b8bc5-518d-4e7f-9582-3ddb90b5827b
-  sha: 550423bfc85c90395aef283e4a3dc664becbaa08
-  size: 16987270
-omsagent/omi-1.2.0-35.ulinux.x64.deb:
-  object_id: 2c4f4cd6-c406-4600-bafe-f652ea651cba
-  sha: a52bf5b89056f8074dbc5d69ea3e9283ca659c4f
-  size: 1485884
-omsagent/scx-1.6.3-212.universal.x64.rpm:
-  object_id: 8bc6f2dc-c14c-441f-a211-95f510c0ed8d
-  sha: 530c65c9ebd60ec5baca53c6cfa000b182957195
-  size: 1828683
-omsagent/omsconfig-1.1.1-535.x64.rpm:
-  object_id: ed1f09ae-3fdd-42de-a789-ae351c999f03
-  sha: 94aafed56142fcf6a8f5f27258894a329520ee36
-  size: 2401503
-omsagent/omsagent-1.3.5-127.universal.x64.deb:
-  object_id: fa0d8d8c-be24-47ca-a2c8-53c7dc107fca
-  sha: 8b59806700ae4342ccd08edc31d48f8db8893290
-  size: 16141404
-omsagent/omi-1.2.0-35.ulinux.x64.rpm:
-  object_id: 33525350-79b7-45ec-97b2-e41d70f49636
-  sha: d9b9d9b7397d59ead9722e05f809a88f9ed40697
-  size: 1347943
-omsagent/omsconfig-1.1.1-535.x64.deb:
-  object_id: b2faa3da-7c3b-4759-b05b-0f0ffea03965
-  sha: b6ef02b70dc1bc55a046af07b4f02b5bd8bde3d0
-  size: 2382330
-omsagent/scx-1.6.3-212.universal.x64.deb:
-  object_id: 850ef9c4-7074-4841-ab61-9903f8d04dd2
-  sha: 075e6ba988ea8046553ba18ba2ae3b3a6fa79900
-  size: 2021846
+omsagent/omi-1.3.0-2.ulinux.x64.deb:
+  size: 1583696
+  object_id: 6ce6d5f7-a3bf-425c-4d16-c95221266af0
+  sha: 32001c76f294698b3b3829e69204e40cc256623e
+omsagent/omi-1.3.0-2.ulinux.x64.rpm:
+  size: 1472173
+  object_id: d9562d30-62c2-4b55-4059-2798609c429d
+  sha: aae2c03c73d456a464cc5e32a967ebe906deb141
+omsagent/omsagent-1.4.1-45.universal.x64.deb:
+  size: 18660118
+  object_id: e9bc237c-0c41-4f00-5349-1495ab71132d
+  sha: 26e38f5a671a0c7dd899bc95e97a7ab002b09b20
+omsagent/omsagent-1.4.1-45.universal.x64.rpm:
+  size: 19553816
+  object_id: 5506d679-dc39-4228-55e3-547ba6ae3198
+  sha: 2d5c45ce27318bee18f67c6c231c3b966a7ebb55
+omsagent/omsconfig-1.1.1-559.x64.deb:
+  size: 2274562
+  object_id: 6d26e5a9-cb36-49d1-5416-d548a56c3ccc
+  sha: c1e6484415dbe929f9bf1bc52ec80a2c1b5be8a3
+omsagent/omsconfig-1.1.1-559.x64.rpm:
+  size: 2292776
+  object_id: 2c9eb14a-54da-4675-59ba-c88d7baaf92f
+  sha: 75566d01b93d743630b788e89fa62e5924374ff8
+omsagent/scx-1.6.3-326.universal.x64.deb:
+  size: 2022684
+  object_id: f1f93758-ccd1-484f-6ef6-c80225fcdeb7
+  sha: 27d795fddd455298b3304e20e49c4d55829a0ae8
+omsagent/scx-1.6.3-326.universal.x64.rpm:
+  size: 1829054
+  object_id: ada4a9d4-12f2-4939-7a03-0f7765946ce5
+  sha: e43563fc3510e27d2650355e884483b0d4cfe1db
