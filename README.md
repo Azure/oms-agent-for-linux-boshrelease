@@ -31,12 +31,15 @@ First, create a new file `runtime.yml` and paste all the following content into 
 ---
 releases:
 - name: oms-agent-for-linux
-  version: 2
+  version: 1.4.1-45
 addons:
 - name: omsagent
   jobs:
   - name: omsagent
     release: oms-agent-for-linux
+  exclude:
+    stemcell:
+    - os: windows2012R2
   properties:
     # Get the OMS workspace ID and key from OMS Portal
     oms:
@@ -45,7 +48,7 @@ addons:
     # Set the rsyslog config as needed, optional
     rsyslog:
       selector_list:
-      - user.*      
+      - user.*
       - syslog.*
       port: 25224
       protocol_type: udp
