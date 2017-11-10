@@ -80,7 +80,7 @@
                                         }
                                     },
                                     "List": {
-                                        "Query": "Syslog | where (SeverityLevel == \"err\" or SeverityLevel == \"warn\") and TimeGenerated > ago(1h) | summarize AggregatedValue = count() by bin(TimeGenerated, 5m), Computer, Facility, SeverityLevel | sort by TimeGenerated desc// Oql: Type=Syslog (SeverityLevel=err or SeverityLevel=warn) TimeGenerated>Now-1Hour | measure Count() by Computer,Facility,SeverityLevel Interval 5MINUTES",
+                                        "Query": "Syslog | where TimeGenerated > ago(1h) | summarize AggregatedValue = count() by Computer, Facility, SeverityLevel// Oql: Type=Syslog TimeGenerated>Now-1Hour | measure Count() by Computer,Facility,SeverityLevel",
                                         "HideGraph": false,
                                         "enableSparklines": true,
                                         "operation": "Summary",
@@ -133,7 +133,7 @@
                                         "Subtitle": "By Computer"
                                     },
                                     "LineChart": {
-                                        "Query": "Perf | where ObjectName == \"Processor\" and InstanceName == \"_Total\" and CounterName == \"% Processor Time\" | summarize AggregatedValue = avg(CounterValue) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc\r\n// Oql: Type=Perf ObjectName=Processor InstanceName=\"_Total\" CounterName=\"% Processor Time\" | measure avg(CounterValue) by Computer interval 5Minutes",
+                                        "Query": "Perf | where ObjectName == \"Processor\" and InstanceName == \"_Total\" and CounterName == \"% Processor Time\" | summarize AggregatedValue = avg(CounterValue) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc// Oql: Type=Perf ObjectName=Processor InstanceName=\"_Total\" CounterName=\"% Processor Time\" | measure avg(CounterValue) by Computer interval 5Minutes",
                                         "yAxis": {
                                             "isLogarithmic": false,
                                             "units": {
@@ -145,7 +145,7 @@
                                         }
                                     },
                                     "List": {
-                                        "Query": "Perf | where ObjectName == \"Processor\" and InstanceName == \"_Total\" and CounterName == \"% Privileged Time\" | summarize AggregatedValue = avg(CounterValue) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc\r\n// Oql: Type=Perf ObjectName=Processor InstanceName=\"_Total\" CounterName=\"% Privileged Time\" | measure avg(CounterValue) by Computer interval 5Minutes",
+                                        "Query": "Perf | where ObjectName == \"Processor\" and InstanceName == \"_Total\" and CounterName == \"% Privileged Time\" | summarize AggregatedValue = avg(CounterValue) by Computer// Oql: Type=Perf ObjectName=Processor InstanceName=\"_Total\" CounterName=\"% Privileged Time\" | measure avg(CounterValue) by Computer",
                                         "HideGraph": false,
                                         "enableSparklines": true,
                                         "operation": "Summary",
@@ -178,7 +178,7 @@
                                             ]
                                         },
                                         "NameDSVSeparator": "",
-                                        "NavigationQuery": "search {selected item}\r\n// Oql: {selected item}"
+                                        "NavigationQuery": "search {selected item}// Oql: {selected item}"
                                     }
                                 }
                             },
@@ -198,7 +198,7 @@
                                         "Subtitle": "By Computer"
                                     },
                                     "LineChart": {
-                                        "Query": "Perf | where ObjectName == \"Memory\" and CounterName == \"% Used Memory\" | summarize Mem = avg(CounterValue) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc\r\n// Oql: Type=Perf ObjectName:Memory CounterName:\"% Used Memory\" | Measure Avg(CounterValue) as Mem by Computer Interval 5MINUTES",
+                                        "Query": "Perf | where ObjectName == \"Memory\" and CounterName == \"% Used Memory\" | summarize Mem = avg(CounterValue) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc// Oql: Type=Perf ObjectName:Memory CounterName:\"% Used Memory\" | Measure Avg(CounterValue) as Mem by Computer Interval 5MINUTES",
                                         "yAxis": {
                                             "isLogarithmic": false,
                                             "units": {
@@ -210,7 +210,7 @@
                                         }
                                     },
                                     "List": {
-                                        "Query": "Perf | where ObjectName == \"Memory\" and CounterName == \"Available MBytes Memory\" | summarize AggregatedValue = avg((CounterValue / 1024)) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc\r\n// Oql: Type=Perf ObjectName:Memory CounterName=\"Available MBytes Memory\" | Measure Avg(div(CounterValue,1024)) by Computer Interval 5MINUTES",
+                                        "Query": "Perf | where ObjectName == \"Memory\" and CounterName == \"Available MBytes Memory\" | summarize AggregatedValue = avg((CounterValue / 1024)) by Computer// Oql: Type=Perf ObjectName:Memory CounterName=\"Available MBytes Memory\" | Measure Avg(div(CounterValue,1024)) by Computer",
                                         "HideGraph": false,
                                         "enableSparklines": true,
                                         "operation": "Summary",
@@ -243,7 +243,7 @@
                                             ]
                                         },
                                         "NameDSVSeparator": "",
-                                        "NavigationQuery": "search {selected item}\r\n// Oql: {selected item}"
+                                        "NavigationQuery": "search {selected item}// Oql: {selected item}"
                                     }
                                 }
                             },
@@ -263,7 +263,7 @@
                                         "Subtitle": "By Computer"
                                     },
                                     "LineChart": {
-                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"Disk Transfers/sec\" and InstanceName == \"/var/vcap/store\" | summarize AggregatedValue = avg(CounterValue) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc\r\n// Oql: Type=Perf ObjectName=\"Logical Disk\" CounterName=\"Disk Transfers/sec\" InstanceName=\"/var/vcap/store\" | measure avg(CounterValue) by Computer interval 5Minutes",
+                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"Disk Transfers/sec\" and InstanceName == \"/var/vcap/store\" | summarize AggregatedValue = avg(CounterValue) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc// Oql: Type=Perf ObjectName=\"Logical Disk\" CounterName=\"Disk Transfers/sec\" InstanceName=\"/var/vcap/store\" | measure avg(CounterValue) by Computer interval 5Minutes",
                                         "yAxis": {
                                             "isLogarithmic": false,
                                             "units": {
@@ -275,7 +275,7 @@
                                         }
                                     },
                                     "List": {
-                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"% Used Space\" and InstanceName == \"/var/vcap/store\" | summarize Disk = avg(CounterValue) by bin(TimeGenerated, 5m), Computer, InstanceName | sort by TimeGenerated desc\r\n// Oql: Type=Perf ObjectName:\"Logical Disk\" CounterName:\"% Used Space\" InstanceName=\"/var/vcap/store\" | Measure Avg(CounterValue) as Disk by Computer,InstanceName Interval 5MINUTES",
+                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"% Used Space\" and InstanceName == \"/var/vcap/store\" | summarize Disk = avg(CounterValue) by Computer, InstanceName// Oql: Type=Perf ObjectName:\"Logical Disk\" CounterName:\"% Used Space\" InstanceName=\"/var/vcap/store\" | Measure Avg(CounterValue) as Disk by Computer,InstanceName",
                                         "HideGraph": false,
                                         "enableSparklines": true,
                                         "operation": "Summary",
@@ -308,7 +308,7 @@
                                             ]
                                         },
                                         "NameDSVSeparator": "",
-                                        "NavigationQuery": "search {selected item}\r\n// Oql: {selected item}"
+                                        "NavigationQuery": "search {selected item}// Oql: {selected item}"
                                     }
                                 }
                             },
@@ -328,7 +328,7 @@
                                         "Subtitle": "By Computer"
                                     },
                                     "LineChart": {
-                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"Disk Transfers/sec\" and InstanceName == \"/var/vcap/data\" | summarize AggregatedValue = avg(CounterValue) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc\r\n// Oql: Type=Perf ObjectName=\"Logical Disk\" CounterName=\"Disk Transfers/sec\" InstanceName=\"/var/vcap/data\" | measure avg(CounterValue) by Computer interval 5Minutes",
+                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"Disk Transfers/sec\" and InstanceName == \"/var/vcap/data\" | summarize AggregatedValue = avg(CounterValue) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc// Oql: Type=Perf ObjectName=\"Logical Disk\" CounterName=\"Disk Transfers/sec\" InstanceName=\"/var/vcap/data\" | measure avg(CounterValue) by Computer interval 5Minutes",
                                         "yAxis": {
                                             "isLogarithmic": false,
                                             "units": {
@@ -340,7 +340,7 @@
                                         }
                                     },
                                     "List": {
-                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"% Used Space\" and InstanceName == \"/var/vcap/data\" | summarize Disk = avg(CounterValue) by bin(TimeGenerated, 5m), Computer, InstanceName | sort by TimeGenerated desc\r\n// Oql: Type=Perf ObjectName:\"Logical Disk\" CounterName:\"% Used Space\" InstanceName=\"/var/vcap/data\" | Measure Avg(CounterValue) as Disk by Computer,InstanceName Interval 5MINUTES",
+                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"% Used Space\" and InstanceName == \"/var/vcap/data\" | summarize Disk = avg(CounterValue) by Computer, InstanceName// Oql: Type=Perf ObjectName:\"Logical Disk\" CounterName:\"% Used Space\" InstanceName=\"/var/vcap/data\" | Measure Avg(CounterValue) as Disk by Computer,InstanceName",
                                         "HideGraph": false,
                                         "enableSparklines": true,
                                         "operation": "Summary",
@@ -373,7 +373,7 @@
                                             ]
                                         },
                                         "NameDSVSeparator": "",
-                                        "NavigationQuery": "search {selected item}\r\n// Oql: {selected item}"
+                                        "NavigationQuery": "search {selected item}// Oql: {selected item}"
                                     }
                                 }
                             },
@@ -393,7 +393,7 @@
                                         "Subtitle": "By Computer"
                                     },
                                     "LineChart": {
-                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"Disk Transfers/sec\" and InstanceName == \"/\" | summarize AggregatedValue = avg(CounterValue) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc\r\n// Oql: Type=Perf ObjectName=\"Logical Disk\" CounterName=\"Disk Transfers/sec\" InstanceName=\"/\" | measure avg(CounterValue) by Computer interval 5Minutes",
+                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"Disk Transfers/sec\" and InstanceName == \"/\" | summarize AggregatedValue = avg(CounterValue) by bin(TimeGenerated, 5m), Computer | sort by TimeGenerated desc// Oql: Type=Perf ObjectName=\"Logical Disk\" CounterName=\"Disk Transfers/sec\" InstanceName=\"/\" | measure avg(CounterValue) by Computer interval 5Minutes",
                                         "yAxis": {
                                             "isLogarithmic": false,
                                             "units": {
@@ -405,7 +405,7 @@
                                         }
                                     },
                                     "List": {
-                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"% Used Space\" and InstanceName == \"/\" | summarize Disk = avg(CounterValue) by bin(TimeGenerated, 5m), Computer, InstanceName | sort by TimeGenerated desc\r\n// Oql: Type=Perf ObjectName:\"Logical Disk\" CounterName:\"% Used Space\" InstanceName=\"/\" | Measure Avg(CounterValue) as Disk by Computer,InstanceName Interval 5MINUTES",
+                                        "Query": "Perf | where ObjectName == \"Logical Disk\" and CounterName == \"% Used Space\" and InstanceName == \"/\" | summarize Disk = avg(CounterValue) by Computer, InstanceName// Oql: Type=Perf ObjectName:\"Logical Disk\" CounterName:\"% Used Space\" InstanceName=\"/\" | Measure Avg(CounterValue) as Disk by Computer,InstanceName",
                                         "HideGraph": false,
                                         "enableSparklines": true,
                                         "operation": "Summary",
@@ -438,7 +438,7 @@
                                             ]
                                         },
                                         "NameDSVSeparator": "",
-                                        "NavigationQuery": "search {selected item}\r\n// Oql: {selected item}"
+                                        "NavigationQuery": "search {selected item}// Oql: {selected item}"
                                     }
                                 }
                             },
@@ -458,7 +458,7 @@
                                         "Subtitle": "By Computer"
                                     },
                                     "Donut": {
-                                        "Query": "Perf | where ObjectName == \"Network\" and CounterName == \"Total Bytes Transmitted\" | summarize AggregatedValue = max((CounterValue / 1073741824)) by Computer | sort by AggregatedValue desc\r\n// Oql: Type=Perf ObjectName=Network CounterName=\"Total Bytes Transmitted\" | measure max(div(CounterValue,1073741824)) by Computer",
+                                        "Query": "Perf | where ObjectName == \"Network\" and CounterName == \"Total Bytes Transmitted\" | summarize AggregatedValue = max((CounterValue / 1073741824)) by Computer | sort by AggregatedValue desc// Oql: Type=Perf ObjectName=Network CounterName=\"Total Bytes Transmitted\" | measure max(div(CounterValue,1073741824)) by Computer",
                                         "CenterLegend": {
                                             "Text": "Total",
                                             "Operation": "Sum",
@@ -474,7 +474,7 @@
                                         }
                                     },
                                     "List": {
-                                        "Query": "Perf | where ObjectName == \"Network\" and CounterName == \"Total Bytes Received\" | summarize AggregatedValue = avg((CounterValue / 1073741824)) by bin(TimeGenerated, 5m), Computer, InstanceName | sort by TimeGenerated desc\r\n// Oql: Type=Perf ObjectName=Network CounterName=\"Total Bytes Received\" | measure avg(div(CounterValue,1073741824)) by Computer,InstanceName interval 5MINUTES",
+                                        "Query": "Perf | where ObjectName == \"Network\" and CounterName == \"Total Bytes Received\" | summarize AggregatedValue = avg((CounterValue / 1073741824)) by Computer, InstanceName// Oql: Type=Perf ObjectName=Network CounterName=\"Total Bytes Received\" | measure avg(div(CounterValue,1073741824)) by Computer,InstanceName",
                                         "HideGraph": false,
                                         "enableSparklines": true,
                                         "operation": "Summary",
@@ -507,7 +507,7 @@
                                             ]
                                         },
                                         "NameDSVSeparator": "",
-                                        "NavigationQuery": "search {selected item}\r\n// Oql: {selected item}"
+                                        "NavigationQuery": "search {selected item}// Oql: {selected item}"
                                     }
                                 }
                             }
