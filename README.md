@@ -31,12 +31,15 @@ First, create a new file `runtime.yml` and paste all the following content into 
 ---
 releases:
 - name: oms-agent-for-linux
-  version: 2
+  version: 1.4.1-45
 addons:
 - name: omsagent
   jobs:
   - name: omsagent
     release: oms-agent-for-linux
+  exclude:
+    stemcell:
+    - os: windows2012R2
   properties:
     # Get the OMS workspace ID and key from OMS Portal
     oms:
@@ -45,7 +48,7 @@ addons:
     # Set the rsyslog config as needed, optional
     rsyslog:
       selector_list:
-      - user.*      
+      - user.*
       - syslog.*
       port: 25224
       protocol_type: udp
@@ -62,6 +65,7 @@ bosh deploy
 
 ### Tips
 
+* Recreate VMs when deploy then runtime-config will help to avoid potential problems.
 * DO NOT specify the job as part of your deployment manifest if you are using the runtime config.
 * If no `rsyslog` config is specified, the [default rsyslog config](https://github.com/Microsoft/OMS-Agent-for-Linux/blob/master/installer/conf/rsyslog.conf) of OMS Agent will be used.
 * Try delete leading spaces and input them by yourself if error `Incorrect YAML structure` occurs when updating `runtime-config` with `runtime.yml`.

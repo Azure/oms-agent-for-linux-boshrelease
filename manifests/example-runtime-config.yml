@@ -6,6 +6,9 @@ addons:
   jobs:
   - name: omsagent
     release: oms-agent-for-linux
+  exclude:
+    stemcell:
+    - os: windows2012R2
   properties:
     # Get the OMS workspace ID and key from OMS Portal
     oms:

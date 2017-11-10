@@ -1,5 +1,6 @@
-name: oms-agent-for-linux-boshrelease
+---
 blobstore:
   provider: s3
   options:
     bucket_name: oms-agent-for-linux-boshrelease
+final_name: oms-agent-for-linux
