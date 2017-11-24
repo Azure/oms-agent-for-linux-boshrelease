@@ -33,6 +33,25 @@ retry_create_symlinks()
 workspace_id=<%= p('oms.workspace_id') %>
 workspace_key=<%= p('oms.workspace_key') %>
 
+# Stop existing agent
+reg="omsagent-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+sev=$(service --status-all | grep -P $reg -o)
+
+if [ ! -z "$sev" ]; then
+    echo "Existing oms agent found $sev"
+    service "$sev" stop
+    rm -f /etc/init.d/omsagent*
+fi
+
+# Stop scx
+which scxadmin > /dev/null 2>&1
+if [ ! -z $? ]; then
+    echo "Stopping scx instances"
+    scxadmin -stop all
+    service omid stop
+    rm -f /etc/init.d/omid
+fi
+
 # Redirect logs
 mkdir -p /var/vcap/sys/log/omi
 mkdir -p /var/vcap/sys/log/scx
