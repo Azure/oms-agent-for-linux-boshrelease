@@ -10,29 +10,36 @@ This release provides an [OMS Agent](https://github.com/Microsoft/OMS-Agent-for-
 
 ## Get started
 
-### Upload release
+To deploy the OMS agent, you will need to install BOSH CLI on your Ops Manager Director and target it. For how to setup it, please follow the document [here](https://docs.pivotal.io/pivotalcf/1-11/customizing/trouble-advanced.html).
 
-To use this bosh release, first upload it to your bosh director:
+### 1. Upload release
+
+To use this bosh release, first upload it to your BOSH Director:
+
 ```
 bosh upload release https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/v2/oms-agent-for-linux-2.tgz
 ```
 
-### Deploy as a BOSH addon
+### 2. Deploy as a BOSH addon
 
-To deploy OMS Agent on all instances in your CloudFoundry deployment, specify the job as an addon in [runtime config](https://bosh.io/docs/runtime-config.html). Do not specify the job as part of your deployment manifest if you are using the runtime config.
+To deploy OMS Agent on all instances in your CloudFoundry deployment, specify the job as an addon in [runtime config](https://bosh.io/docs/runtime-config.html).
 
-If no rsyslog config is specified, the [default rsyslog config](https://github.com/Microsoft/OMS-Agent-for-Linux/blob/master/installer/conf/rsyslog.conf) of omsagent will be used.
+First, create a new file `runtime.yml` and paste all the following content into it.
+
 ```
 # runtime.yml
 ---
 releases:
 - name: oms-agent-for-linux
-  version: 2
+  version: 1.4.1-45
 addons:
 - name: omsagent
   jobs:
   - name: omsagent
     release: oms-agent-for-linux
+  exclude:
+    stemcell:
+    - os: windows2012R2
   properties:
     # Get the OMS workspace ID and key from OMS Portal
     oms:
@@ -41,17 +48,27 @@ addons:
     # Set the rsyslog config as needed, optional
     rsyslog:
       selector_list:
-      - user.*      
+      - user.*
       - syslog.*
       port: 25224
       protocol_type: udp
 ```
 
-Deploy the runtime config:
+After replace placeholders in the file with id and key of your OMS workspace, deploy the runtime config with the following commands.
+
+_Be aware that you have to target your bosh CLI to your OpsManager Director first._
+
 ```
 bosh update runtime-config runtime.yml
 bosh deploy
 ```
+
+### Tips
+
+* Recreate VMs when deploy then runtime-config will help to avoid potential problems.
+* DO NOT specify the job as part of your deployment manifest if you are using the runtime config.
+* If no `rsyslog` config is specified, the [default rsyslog config](https://github.com/Microsoft/OMS-Agent-for-Linux/blob/master/installer/conf/rsyslog.conf) of OMS Agent will be used.
+* Try delete leading spaces and input them by yourself if error `Incorrect YAML structure` occurs when updating `runtime-config` with `runtime.yml`.
 
 ## View in OMS Portal
 
