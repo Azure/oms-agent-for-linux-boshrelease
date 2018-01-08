@@ -15,7 +15,7 @@ retry_create_symlinks()
         while [ $RETRIES -gt 0 ]; do
             # If $LINK exists and is a directory, backup the logs and then recreate it as a symlink
             if [ -d $LINK ]; then
-                mv -rf $LINK/* $DIR/
+                mv -f $LINK/* $DIR/
                 rm -rf $LINK
             fi
             ln -s $DIR $LINK
@@ -32,6 +32,7 @@ retry_create_symlinks()
 
 workspace_id=<%= p('oms.workspace_id') %>
 workspace_key=<%= p('oms.workspace_key') %>
+rsyslog_port=<%= p('rsyslog.port', 25224) %>
 
 # Stop existing agent
 reg="omsagent-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
@@ -39,8 +40,10 @@ sev=$(service --status-all | grep -P $reg -o)
 
 if [ ! -z "$sev" ]; then
     echo "Existing oms agent found $sev"
+    netstat -anop | grep ${rsyslog_port} | cut -c 81- | cut -d'/' -f 1 | cut -d'-' -f 1 | xargs kill -s 9
     service "$sev" stop
     rm -f /etc/init.d/omsagent*
+    dpkg -r omsagent omsconfig
 fi
 
 # Stop scx
@@ -50,6 +53,7 @@ if [ ! -z $? ]; then
     scxadmin -stop all
     service omid stop
     rm -f /etc/init.d/omid
+    dpkg -r omi scx
 fi
 
 # Redirect logs
