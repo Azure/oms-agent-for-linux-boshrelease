@@ -4,12 +4,12 @@ name: omsagent
 files:
 - utils/utils.sh
 - omsagent/omi-1.3.0-2.ulinux.x64.deb
-- omsagent/omsagent-1.4.1-45.universal.x64.deb
-- omsagent/omsconfig-1.1.1-559.x64.deb
+- omsagent/omsagent-1.4.2-125.universal.x64.deb
+- omsagent/omsconfig-1.1.1-563.x64.deb
 - omsagent/scx-1.6.3-326.universal.x64.deb
 - omsagent/omi-1.3.0-2.ulinux.x64.rpm
-- omsagent/omsagent-1.4.1-45.universal.x64.rpm
-- omsagent/omsconfig-1.1.1-559.x64.rpm
+- omsagent/omsagent-1.4.2-125.universal.x64.rpm
+- omsagent/omsconfig-1.1.1-563.x64.rpm
 - omsagent/scx-1.6.3-326.universal.x64.rpm
 - conf/logrotate.scx.conf
 - conf/oms.uaa.conf
