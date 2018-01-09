@@ -35,7 +35,7 @@ First, create a new file `runtime.yml` and paste all the following content into 
 ---
 releases:
 - name: oms-agent-for-linux
-  version: 1.4.2-125
+  version: 1.4.1-45
 addons:
 - name: omsagent
   jobs:
