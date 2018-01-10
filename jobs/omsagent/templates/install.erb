@@ -34,6 +34,10 @@ workspace_id=<%= p('oms.workspace_id') %>
 workspace_key=<%= p('oms.workspace_key') %>
 rsyslog_port=<%= p('rsyslog.port', 25224) %>
 
+# Detect dpkg
+which dpkg > /dev/null 2>&1
+DPKG_FOUND=$?
+
 # Stop existing agent
 reg="omsagent-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
 sev=$(service --status-all | grep -P $reg -o)
@@ -43,7 +47,12 @@ if [ ! -z "$sev" ]; then
     netstat -anop | grep ${rsyslog_port} | cut -c 81- | cut -d'/' -f 1 | cut -d'-' -f 1 | xargs kill -s 9
     service "$sev" stop
     rm -f /etc/init.d/omsagent*
-    dpkg -r omsagent omsconfig
+
+    if [ ${DPKG_FOUND} -eq 0 ]; then
+        dpkg -r omsagent omsconfig
+    else
+        rpm -e omsagent omsconfig
+    fi
 fi
 
 # Stop scx
@@ -53,7 +62,12 @@ if [ ! -z $? ]; then
     scxadmin -stop all
     service omid stop
     rm -f /etc/init.d/omid
-    dpkg -r omi scx
+
+    if [ ${DPKG_FOUND} -eq 0 ]; then
+        dpkg -r omi scx
+    else
+        rpm -e omi scx
+    fi
 fi
 
 # Redirect logs
@@ -80,8 +94,7 @@ URL_TLD=opinsights.azure.com
 EOF
 
 # Install packages
-which dpkg > /dev/null 2>&1
-if [ $? -eq 0 ]; then
+if [ ${DPKG_FOUND} -eq 0 ]; then
     dpkg -i --force-confold --force-confdef /var/vcap/packages/omsagent/omi*.deb /var/vcap/packages/omsagent/scx*.deb /var/vcap/packages/omsagent/omsagent*.deb /var/vcap/packages/omsagent/omsconfig*.deb
 else
     rpm -Uvh --force /var/vcap/packages/omsagent/omi-*.rpm /var/vcap/packages/omsagent/scx*.rpm /var/vcap/packages/omsagent/omsagent*.rpm /var/vcap/packages/omsagent/omsconfig*.rpm
