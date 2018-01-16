@@ -1,0 +1,19 @@
+name: oms-agent-for-linux
+version: 1.4.2-125
+commit_hash: 54d7083
+uncommitted_changes: false
+jobs:
+- name: omsagent
+  version: f7b4438995fafdebd5d0a0ad4a140972046798e5
+  fingerprint: f7b4438995fafdebd5d0a0ad4a140972046798e5
+  sha1: 40c5f7740b0968ff1aaa5a100dce862417e8a688
+packages:
+- name: omsagent
+  version: a834d1253b5cbe793dc3bf227f2377b4068d0a71
+  fingerprint: a834d1253b5cbe793dc3bf227f2377b4068d0a71
+  sha1: ca55e124a9bf4504ee9af906381881651762533e
+  dependencies: []
+license:
+  version: e6c4ccc65c76e75e2338d1edabdcf264d37ee663
+  fingerprint: e6c4ccc65c76e75e2338d1edabdcf264d37ee663
+  sha1: 039ff715624729edd9f8d54ab97dd71fb9ef2eea

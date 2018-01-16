@@ -528,9 +528,9 @@
                                 },
                                 "Advanced": {
                                     "DataFlowVerification": {
-                                        "Enabled": false,
-                                        "Query": "search * | limit 1 | project TimeGenerated",
-                                        "Message": ""
+                                        "Enabled": true,
+                                        "Query": "Perf",
+                                        "Message": "No Syslog or Perf data avaliable yet, please make sure you have installed `Azure OMS Agent`. Please check [here](https://github.com/Azure/oms-agent-for-linux-boshrelease) for more instructions."
                                     }
                                 }
                             }

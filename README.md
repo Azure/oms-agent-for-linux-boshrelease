@@ -10,14 +10,18 @@ This release provides an [OMS Agent](https://github.com/Microsoft/OMS-Agent-for-
 
 ## Get started
 
-To deploy the OMS agent, you will need to install BOSH CLI on your Ops Manager Director and target it. For how to setup it, please follow the document [here](https://docs.pivotal.io/pivotalcf/1-11/customizing/trouble-advanced.html).
+To deploy the OMS agent, you will need to install BOSH CLI on your Ops Manager Director and target it. For how to setup it, please follow the document [here](https://docs.pivotal.io/pivotalcf/2-0/customizing/trouble-advanced.html).
 
 ### 1. Upload release
 
 To use this bosh release, first upload it to your BOSH Director:
 
 ```
-bosh upload release https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/v2/oms-agent-for-linux-2.tgz
+# BOSH CLI v1
+bosh upload release https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/1.4.2-125/oms-agent-for-linux-1.4.2-125.tgz
+
+# BOSH CLI v2
+bosh2 upload-release https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/1.4.2-125/oms-agent-for-linux-1.4.2-125.tgz
 ```
 
 ### 2. Deploy as a BOSH addon
@@ -56,10 +60,13 @@ addons:
 
 After replace placeholders in the file with id and key of your OMS workspace, deploy the runtime config with the following commands.
 
-_Be aware that you have to target your bosh CLI to your OpsManager Director first._
-
 ```
+# BOSH CLI v1
 bosh update runtime-config runtime.yml
+bosh deploy
+
+# BOSH CLI v2
+bosh update-runtime-config runtime.yml
 bosh deploy
 ```
 
@@ -68,7 +75,7 @@ bosh deploy
 * Recreate VMs when deploy then runtime-config will help to avoid potential problems.
 * DO NOT specify the job as part of your deployment manifest if you are using the runtime config.
 * If no `rsyslog` config is specified, the [default rsyslog config](https://github.com/Microsoft/OMS-Agent-for-Linux/blob/master/installer/conf/rsyslog.conf) of OMS Agent will be used.
-* Try delete leading spaces and input them by yourself if error `Incorrect YAML structure` occurs when updating `runtime-config` with `runtime.yml`.
+* Try delete leading spaces and input them by yourself if error `Incorrect YAML structure` occurs when updating `runtime-config` with `runtime.yml` copied from above.
 
 ## View in OMS Portal
 
