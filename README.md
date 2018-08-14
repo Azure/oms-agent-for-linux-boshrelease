@@ -18,10 +18,10 @@ To use this bosh release, first upload it to your BOSH Director:
 
 ```
 # BOSH CLI v1
-bosh upload release https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/1.4.2-125/oms-agent-for-linux-1.4.2-125.tgz
+bosh upload release https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/v1.4.2-125/oms-agent-for-linux-1.4.2-125.tgz
 
 # BOSH CLI v2
-bosh2 upload-release https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/1.4.2-125/oms-agent-for-linux-1.4.2-125.tgz
+bosh2 upload-release https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/v1.4.2-125/oms-agent-for-linux-1.4.2-125.tgz
 ```
 
 ### 2. Deploy as a BOSH addon
@@ -35,7 +35,7 @@ First, create a new file `runtime.yml` and paste all the following content into 
 ---
 releases:
 - name: oms-agent-for-linux
-  version: 1.4.1-45
+  version: 1.4.2-125
 addons:
 - name: omsagent
   jobs:
