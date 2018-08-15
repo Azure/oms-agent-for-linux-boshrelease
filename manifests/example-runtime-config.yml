@@ -1,7 +1,7 @@
 releases:
 - name: oms-agent-for-linux
-  version: 1.4.1-45
-  url: https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/v1.4.1-45/oms-agent-for-linux-1.4.1-45.tgz
+  version: 1.4.2-125
+  url: https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/v1.4.2-125/oms-agent-for-linux-1.4.2-125.tgz
 addons:
 - name: omsagent
   jobs:
