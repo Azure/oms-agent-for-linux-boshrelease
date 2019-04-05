@@ -95,7 +95,10 @@ EOF
 
 # Install packages
 if [ ${DPKG_FOUND} -eq 0 ]; then
+    (
+    flock -x 200
     dpkg -i --force-confold --force-confdef /var/vcap/packages/omsagent/omi*.deb /var/vcap/packages/omsagent/scx*.deb /var/vcap/packages/omsagent/omsagent*.deb /var/vcap/packages/omsagent/omsconfig*.deb
+    ) 200>/var/vcap/data/dpkg.lock
 else
     rpm -Uvh --force /var/vcap/packages/omsagent/omi-*.rpm /var/vcap/packages/omsagent/scx*.rpm /var/vcap/packages/omsagent/omsagent*.rpm /var/vcap/packages/omsagent/omsconfig*.rpm
 fi
