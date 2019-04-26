@@ -41,8 +41,9 @@ DPKG_FOUND=$?
 # Stop existing agent
 reg="omsagent-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
 sev=$(service --status-all | grep -P $reg -o)
+ins=$(top -b -n 1 | grep omsagent)
 
-if [ ! -z "$sev" ]; then
+if [ ! -z "$sev" ] | [ ! -z "$ins" ]; then
     echo "Existing oms agent found $sev"
     netstat -anop | grep ${rsyslog_port} | cut -c 81- | cut -d'/' -f 1 | cut -d'-' -f 1 | xargs kill -s 9
     service "$sev" stop
