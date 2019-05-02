@@ -45,9 +45,19 @@ ins=$(top -b -n 1 | grep omsagent)
 
 if [ ! -z "$sev" ] | [ ! -z "$ins" ]; then
     echo "Existing oms agent found $sev"
-    netstat -anop | grep ${rsyslog_port} | cut -c 81- | cut -d'/' -f 1 | cut -d'-' -f 1 | xargs kill -s 9
+    sudo netstat -anop | grep ${rsyslog_port} | cut -c 81- | cut -d'/' -f 1 | cut -d'-' -f 1 | sudo xargs kill -s 9
     service "$sev" stop
     rm -f /etc/init.d/omsagent*
+
+    echo -n "Terminating existing oms agent.. "
+    current_pids=$(sudo netstat -anop | grep ${rsyslog_port} | cut -c 81- | cut -d'/' -f 1 | cut -d'-' -f 1)
+    for current_pid in $current_pids; do
+      echo -n "$curent_pid "
+      sudo kill -sigkill $current_pid
+      echo $curent_pid > $PID_FILE_TEMP
+      wait_until_process_stops $PID_FILE_TEMP 5
+    done
+    echo ""
 
     if [ ${DPKG_FOUND} -eq 0 ]; then
         dpkg -r omsagent omsconfig
