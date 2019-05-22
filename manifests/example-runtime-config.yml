@@ -1,6 +1,6 @@
 releases:
 - name: oms-agent-for-linux
-  version: 1.4.2-125
+  version: 1.9.0-0
   url: https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/v1.4.2-125/oms-agent-for-linux-1.4.2-125.tgz
 addons:
 - name: omsagent
@@ -10,6 +10,9 @@ addons:
   exclude:
     stemcell:
     - os: windows2012R2
+    - os: windows2016
+    - os: windows2019
+    - os: windows1803
   properties:
     # Get the OMS workspace ID and key from OMS Portal
     oms:
