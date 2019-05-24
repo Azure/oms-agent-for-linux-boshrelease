@@ -6,6 +6,7 @@ RUN_DIR=/var/vcap/sys/run/omsagent
 LOG_DIR=/var/vcap/sys/log/omsagent
 
 PID_FILE=$RUN_DIR/omsagent.pid
+PID_FILE_TEMP=$RUN_DIR/omsagent_tmp.pid
 LOG_FILE=$LOG_DIR/omsagent.log
 
 RUBY_BIN=/opt/microsoft/omsagent/ruby/bin/ruby
@@ -19,6 +20,7 @@ OMSAGENT_CONF=/etc/opt/microsoft/omsagent/${WORKSPACE_ID}/conf/omsagent.conf
 case $1 in
 
   start)
+    $0 stop
 
     mkdir -p $RUN_DIR
 
@@ -77,6 +79,13 @@ case $1 in
 
     kill -sigkill `cat $PID_FILE`
     wait_until_process_stops $PID_FILE 5
+
+    current_pids=$(sudo netstat -anop | grep ${rsyslog_port} | cut -c 81- | cut -d'/' -f 1 | cut -d'-' -f 1)
+    for current_pid in $current_pids; do
+      sudo kill -sigkill $current_pid
+      echo $curent_pid > $PID_FILE_TEMP
+      wait_until_process_stops $PID_FILE_TEMP 5
+    done
     ;;
 
   # dsc might call restart, to avoid conflict with monit, only stop the omsagent process, and leave monit to start it again
