@@ -93,8 +93,6 @@ retry_create_symlinks /var/vcap/sys/log/omi /var/opt/omi/log
 retry_create_symlinks /var/vcap/sys/log/scx /var/opt/microsoft/scx/log
 retry_create_symlinks /var/vcap/sys/log/omsconfig /var/opt/microsoft/omsconfig
 
-chown -h omsagent:omsagent /var/opt/microsoft/omsconfig
-
 cp -f /var/vcap/packages/omsagent/logrotate.scx.conf /etc/logrotate.d/scx
 
 # Write the onboard config
@@ -103,6 +101,29 @@ WORKSPACE_ID=$workspace_id
 SHARED_KEY=$workspace_key
 URL_TLD=opinsights.azure.com
 EOF
+
+# Setup user account and permission
+echo "Using identity $(id)"
+
+count=$(sudo grep -c '^omsagent:' /etc/group)
+if [ "$count" == 0 ]; then
+    # Create new user group omsagent
+    sudo groupadd -f "omsagent"
+fi
+
+count=$(sudo grep -c '^omsagent:' /etc/passwd)
+if [ "$count" == 0 ]; then
+    # Create new user account omsagent
+    sudo useradd -m -s /bin/bash "omsagent"
+fi
+
+usermod -aG omsagent omsagent
+
+chown -h omsagent:omsagent /var/opt/microsoft/omsconfig
+
+# Add oms users to vcap group for file system access
+usermod -aG vcap omsagent
+usermod -aG vcap nxautomation
 
 # Install packages
 if [ ${DPKG_FOUND} -eq 0 ]; then
@@ -113,10 +134,6 @@ if [ ${DPKG_FOUND} -eq 0 ]; then
 else
     rpm -Uvh --force /var/vcap/packages/omsagent/omi-*.rpm /var/vcap/packages/omsagent/scx*.rpm /var/vcap/packages/omsagent/omsagent*.rpm /var/vcap/packages/omsagent/omsconfig*.rpm
 fi
-
-# Add oms users to vcap group for file system access
-usermod -aG vcap omsagent
-usermod -aG vcap nxautomation
 
 # Backup the default configuration, at every deployment the rsyslog config will be first restored from default and then changed according to job properties
 if [ ! -e /etc/opt/microsoft/omsagent/sysconf/95-omsagent.conf.bk ]; then
