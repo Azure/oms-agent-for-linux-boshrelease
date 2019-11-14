@@ -152,12 +152,14 @@ fi
 # Disable the default service
 service omsagent-${workspace_id} stop
 rm -f /etc/init.d/omsagent*
-systemctl omsagent-${workspace_id} stop
+systemctl stop omsagent-${workspace_id}
+systemctl disable omsagent-${workspace_id}
 rm -f /lib/systemd/system/omsagent*
 
 service omid stop
 rm -f /etc/init.d/omid
-systemctl omid stop
+systemctl stop omid
+systemctl disable omid
 rm -f /lib/systemd/system/omid.service
 
 # Add the config for collecting uaa.log
