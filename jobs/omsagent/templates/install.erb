@@ -105,21 +105,30 @@ EOF
 # Setup user account and permission
 echo "Using identity $(id)"
 
-count=$(sudo grep -c '^omsagent:' /etc/group)
+count=$(grep -c '^omsagent:' /etc/group)
 if [ "$count" == 0 ]; then
     # Create new user group omsagent
-    sudo groupadd -f "omsagent"
+    groupadd -f "omsagent"
 fi
 
-count=$(sudo grep -c '^omsagent:' /etc/passwd)
+count=$(grep -c '^omiusers:' /etc/group)
+if [ "$count" == 0 ]; then
+    # Create new user group omiusers
+    groupadd -f "omiusers"
+fi
+
+count=$(grep -c '^omsagent:' /etc/passwd)
 if [ "$count" == 0 ]; then
     # Create new user account omsagent
-    sudo useradd -m -s /bin/bash "omsagent"
+    useradd -M -N -s /bin/bash "omsagent"
 fi
 
 usermod -aG omsagent omsagent
+usermod -aG omiusers omsagent
 
 chown -h omsagent:omsagent /var/opt/microsoft/omsconfig
+chown -h omsagent:omiusers /var/opt/microsoft/omsconfig
+chown -h omsagent:omsagent /var/vcap/sys/log/omsconfig
 
 # Add oms users to vcap group for file system access
 usermod -aG vcap omsagent
