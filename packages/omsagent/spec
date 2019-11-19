@@ -9,7 +9,7 @@ files:
 - omsagent/scx-1.6.3-1079.universal.x64.deb
 - omsagent/omi-1.6.3-0.ulinux.x64.rpm
 - omsagent/omsagent-1.12.7-0.universal.x64.rpm
-- omsagent/omsconfig-1.1.1-928.x64.rpm
+- omsagent/omsconfig-1.1.1-926.x64.rpm
 - omsagent/scx-1.6.3-1079.universal.x64.rpm
 - conf/logrotate.scx.conf
 - conf/oms.uaa.conf
