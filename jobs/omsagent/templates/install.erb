@@ -138,11 +138,13 @@ usermod -aG vcap nxautomation
 if [ ${DPKG_FOUND} -eq 0 ]; then
     (
     flock -x 200
-    dpkg -i --force-confold --force-confdef /var/vcap/packages/omsagent/omi*.deb /var/vcap/packages/omsagent/scx*.deb /var/vcap/packages/omsagent/omsagent*.deb /var/vcap/packages/omsagent/omsconfig*.deb
+    dpkg -i --force-confold --force-confdef /var/vcap/packages/omsagent/omi*.deb /var/vcap/packages/omsagent/scx*.deb /var/vcap/packages/omsagent/omsagent*.deb /var/vcap/packages/omsagent/omsconfig*.deb || true
     ) 200>/var/vcap/data/dpkg.lock
 else
-    rpm -Uvh --force /var/vcap/packages/omsagent/omi-*.rpm /var/vcap/packages/omsagent/scx*.rpm /var/vcap/packages/omsagent/omsagent*.rpm /var/vcap/packages/omsagent/omsconfig*.rpm
+    rpm -Uvh --force /var/vcap/packages/omsagent/omi-*.rpm /var/vcap/packages/omsagent/scx*.rpm /var/vcap/packages/omsagent/omsagent*.rpm /var/vcap/packages/omsagent/omsconfig*.rpm || true
 fi
+
+chown -h omsagent:omiusers /var/opt/microsoft/omsconfig
 
 # Backup the default configuration, at every deployment the rsyslog config will be first restored from default and then changed according to job properties
 if [ ! -e /etc/opt/microsoft/omsagent/sysconf/95-omsagent.conf.bk ]; then
