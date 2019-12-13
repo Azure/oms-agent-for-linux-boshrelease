@@ -1,6 +1,6 @@
 releases:
 - name: oms-agent-for-linux
-  version: 1.9.0-0
+  version: 1.12.15-0
   url: https://github.com/Azure/oms-agent-for-linux-boshrelease/releases/download/v1.4.2-125/oms-agent-for-linux-1.4.2-125.tgz
 addons:
 - name: omsagent
@@ -18,7 +18,7 @@ addons:
     oms:
       workspace_id: CHANGE_ME
       workspace_key: CHANGE_ME
-      top_level_domain: opinsights.azure.com
+      top_level_domain: opinsights.azure.com # opinsights.azure.us for Azure US Government
     # Modify the config as needed, if no rsyslog config is specifed, the default rsyslog config of omsagent will be used
     rsyslog:
       selector_list:

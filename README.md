@@ -35,7 +35,7 @@ First, create a new file `runtime.yml` and paste all the following content into 
 ---
 releases:
 - name: oms-agent-for-linux
-  version: 1.9.0-0
+  version: 1.12.15-0
 addons:
 - name: omsagent
   jobs:
@@ -52,6 +52,7 @@ addons:
     oms:
       workspace_id: CHANGE_ME
       workspace_key: CHANGE_ME
+      top_level_domain: opinsights.azure.com # opinsights.azure.us for Azure US Government
     # Set the rsyslog config as needed, optional
     rsyslog:
       selector_list:
