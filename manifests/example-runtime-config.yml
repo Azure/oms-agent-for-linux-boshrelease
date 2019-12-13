@@ -18,6 +18,7 @@ addons:
     oms:
       workspace_id: CHANGE_ME
       workspace_key: CHANGE_ME
+      top_level_domain: opinsights.azure.com
     # Modify the config as needed, if no rsyslog config is specifed, the default rsyslog config of omsagent will be used
     rsyslog:
       selector_list:

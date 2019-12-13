@@ -32,6 +32,7 @@ retry_create_symlinks()
 
 workspace_id=<%= p('oms.workspace_id') %>
 workspace_key=<%= p('oms.workspace_key') %>
+oms_top_level_domain=<%= p('oms.top_level_domain', opinsights.azure.com) %>
 rsyslog_port=<%= p('rsyslog.port', 25224) %>
 
 # Detect dpkg
@@ -99,7 +100,7 @@ cp -f /var/vcap/packages/omsagent/logrotate.scx.conf /etc/logrotate.d/scx
 cat <<EOF > /etc/omsagent-onboard.conf
 WORKSPACE_ID=$workspace_id
 SHARED_KEY=$workspace_key
-URL_TLD=opinsights.azure.com
+URL_TLD=$oms_top_level_domain
 EOF
 
 # Setup user account and permission
