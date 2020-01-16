@@ -32,6 +32,7 @@ retry_create_symlinks()
 
 workspace_id=<%= p('oms.workspace_id') %>
 workspace_key=<%= p('oms.workspace_key') %>
+oms_top_level_domain=<%= p('oms.top_level_domain', "opinsights.azure.com") %>
 rsyslog_port=<%= p('rsyslog.port', 25224) %>
 
 # Detect dpkg
@@ -93,30 +94,58 @@ retry_create_symlinks /var/vcap/sys/log/omi /var/opt/omi/log
 retry_create_symlinks /var/vcap/sys/log/scx /var/opt/microsoft/scx/log
 retry_create_symlinks /var/vcap/sys/log/omsconfig /var/opt/microsoft/omsconfig
 
-chown -h omsagent:omsagent /var/opt/microsoft/omsconfig
-
 cp -f /var/vcap/packages/omsagent/logrotate.scx.conf /etc/logrotate.d/scx
 
 # Write the onboard config
 cat <<EOF > /etc/omsagent-onboard.conf
 WORKSPACE_ID=$workspace_id
 SHARED_KEY=$workspace_key
-URL_TLD=opinsights.azure.com
+URL_TLD=$oms_top_level_domain
 EOF
+
+# Setup user account and permission
+echo "Using identity $(id)"
+
+count=$(grep -c '^omsagent:' /etc/group)
+if [ "$count" == 0 ]; then
+    # Create new user group omsagent
+    groupadd -f "omsagent"
+fi
+
+count=$(grep -c '^omiusers:' /etc/group)
+if [ "$count" == 0 ]; then
+    # Create new user group omiusers
+    groupadd -f "omiusers"
+fi
+
+count=$(grep -c '^omsagent:' /etc/passwd)
+if [ "$count" == 0 ]; then
+    # Create new user account omsagent
+    useradd -M -N -s /bin/bash "omsagent"
+fi
+
+usermod -aG omsagent omsagent
+usermod -aG omiusers omsagent
+
+chown -h omsagent:omsagent /var/opt/microsoft/omsconfig
+chown -h omsagent:omiusers /var/opt/microsoft/omsconfig
+chown -h omsagent:omsagent /var/vcap/sys/log/omsconfig
+
+# Add oms users to vcap group for file system access
+usermod -aG vcap omsagent
+usermod -aG vcap nxautomation
 
 # Install packages
 if [ ${DPKG_FOUND} -eq 0 ]; then
     (
     flock -x 200
-    dpkg -i --force-confold --force-confdef /var/vcap/packages/omsagent/omi*.deb /var/vcap/packages/omsagent/scx*.deb /var/vcap/packages/omsagent/omsagent*.deb /var/vcap/packages/omsagent/omsconfig*.deb
+    dpkg -i --force-confold --force-confdef /var/vcap/packages/omsagent/omi*.deb /var/vcap/packages/omsagent/scx*.deb /var/vcap/packages/omsagent/omsagent*.deb /var/vcap/packages/omsagent/omsconfig*.deb || true
     ) 200>/var/vcap/data/dpkg.lock
 else
-    rpm -Uvh --force /var/vcap/packages/omsagent/omi-*.rpm /var/vcap/packages/omsagent/scx*.rpm /var/vcap/packages/omsagent/omsagent*.rpm /var/vcap/packages/omsagent/omsconfig*.rpm
+    rpm -Uvh --force /var/vcap/packages/omsagent/omi-*.rpm /var/vcap/packages/omsagent/scx*.rpm /var/vcap/packages/omsagent/omsagent*.rpm /var/vcap/packages/omsagent/omsconfig*.rpm || true
 fi
 
-# Add oms users to vcap group for file system access
-usermod -aG vcap omsagent
-usermod -aG vcap nxautomation
+chown -h omsagent:omiusers /var/opt/microsoft/omsconfig
 
 # Backup the default configuration, at every deployment the rsyslog config will be first restored from default and then changed according to job properties
 if [ ! -e /etc/opt/microsoft/omsagent/sysconf/95-omsagent.conf.bk ]; then
@@ -126,9 +155,15 @@ fi
 # Disable the default service
 service omsagent-${workspace_id} stop
 rm -f /etc/init.d/omsagent*
+systemctl stop omsagent-${workspace_id}
+systemctl disable omsagent-${workspace_id}
+rm -f /lib/systemd/system/omsagent*
 
 service omid stop
 rm -f /etc/init.d/omid
+systemctl stop omid
+systemctl disable omid
+rm -f /lib/systemd/system/omid.service
 
 # Add the config for collecting uaa.log
 if [ -f /var/vcap/sys/log/uaa/uaa.log ]; then

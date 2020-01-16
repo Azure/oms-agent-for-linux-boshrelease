@@ -13,6 +13,8 @@ properties:
     description: OMS workspace ID
   oms.workspace_key:
     description: OMS workspace key
+  oms.top_level_domain:
+    description: OMS top level domain, opinsights.azure.com for Azure public cloud, opinsights.azure.us for Azure Government, default is opinsights.azure.com
   rsyslog.selector_list:
     description: optional, list of syslog selectors, syntax is FACILITY.PRIORITY
   rsyslog.port:
